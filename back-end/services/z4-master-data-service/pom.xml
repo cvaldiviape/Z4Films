@@ -8,11 +8,11 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.catalogs</groupId>
-	<artifactId>catalogs-service</artifactId>
+	<groupId>com.master</groupId>
+	<artifactId>z4-master-data-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>catalogs-service</name>
-	<description>Catalogs Service</description>
+	<name>z4-master-data-service</name>
+	<description>Master Data Service</description>
 	<url/>
 	<licenses>
 		<license/>

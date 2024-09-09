@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shared</groupId>
-	<artifactId>shared-service</artifactId>
+	<artifactId>z4-shared-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>shared-service</name>
+	<name>z4-shared-service</name>
 	<description>Shared Service</description>
 	<url/>
 	<licenses>
