@@ -3,7 +3,6 @@ package com.master.core.entity.mapper;
 import com.master.core.entity.CountryEntity;
 import com.shared.dto.external.master.CountryDto;
 import org.mapstruct.*;
-import java.util.Collection;
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)

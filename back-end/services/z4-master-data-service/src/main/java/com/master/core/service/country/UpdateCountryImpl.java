@@ -34,15 +34,15 @@ public class UpdateCountryImpl extends GenericUpdateService<CountryEntity, Count
     }
 
     @Override
-    public CountryEntity findEntityById(Integer idCountry) {
-        return this.countryRepository.findById(idCountry)
-                .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.COUNTRY.getValue(), idCountry));
+    public CountryEntity findEntityById(Integer countryId) {
+        return this.countryRepository.findById(countryId)
+                .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.COUNTRY.getValue(), countryId));
     }
 
     @Override
-    public void verifyUnique(Integer idCountry, CountryDto countryDto) {
-        Boolean existsCode = this.countryRepository.existsByCodeAndCountryIdNot(countryDto.getCode(), idCountry);
-        Boolean existsName = this.countryRepository.existsByNameAndCountryIdNot(countryDto.getName(), idCountry);
+    public void verifyUnique(Integer countryId, CountryDto countryDto) {
+        Boolean existsCode = this.countryRepository.existsByCodeAndCountryIdNot(countryDto.getCode(), countryId);
+        Boolean existsName = this.countryRepository.existsByNameAndCountryIdNot(countryDto.getName(), countryId);
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, countryDto.getCode());
         ValidateUtil.validateUnique(existsName, ValueEnum.NAME, countryDto.getName());
     }
