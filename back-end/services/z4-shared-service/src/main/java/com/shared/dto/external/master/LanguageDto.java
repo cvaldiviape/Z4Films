@@ -5,7 +5,6 @@ import com.shared.dto.custom.CommonDto;
 import com.shared.utils.filter.Searchable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -14,12 +13,12 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true) // Incluye la lógica de la clase padre
 public class LanguageDto extends CommonDto implements Searchable<Integer> {
 
-    private Integer idLanguage;
+    private Integer languageId;
 
     @JsonIgnore
     @Override
     public Integer getSearcheableField() {
-        return this.idLanguage;
+        return this.languageId;
     }
 
 }
