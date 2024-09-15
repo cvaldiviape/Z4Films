@@ -14,17 +14,17 @@ import java.util.List;
 @Service("findAllGenreImpl")
 public class FindAllGenreImpl extends GenericFindAllService<GenreEntity, GenreDto, Integer> {
 
-    private final GenreRepository countryRepository;
-    private final GenreMapper countryMapper;
+    private final GenreRepository genreRepository;
+    private final GenreMapper genreMapper;
 
     @Override
     public JpaRepository<GenreEntity, Integer> getJpaRepository() {
-        return this.countryRepository;
+        return this.genreRepository;
     }
 
     @Override
     public List<GenreDto> toListDtos(List<GenreEntity> listEntities) {
-        return this.countryMapper.toListDtos(listEntities);
+        return this.genreMapper.toListDtos(listEntities);
     }
 
 }

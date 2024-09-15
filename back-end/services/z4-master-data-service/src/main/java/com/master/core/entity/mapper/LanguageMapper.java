@@ -3,7 +3,7 @@ package com.master.core.entity.mapper;
 import com.master.core.entity.LanguageEntity;
 import com.shared.dto.external.master.LanguageDto;
 import org.mapstruct.*;
-import java.util.Collection;
+import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface LanguageMapper {
@@ -16,9 +16,9 @@ public interface LanguageMapper {
     @Mapping(target = "languageId", ignore = true)
     public LanguageEntity toEntityIgnoredId(LanguageDto dto);
     @Named("LanguageMapper.toListDtos")
-    Collection<LanguageDto> toListDtos(Collection<LanguageEntity> listEntities);
+    List<LanguageDto> toListDtos(List<LanguageEntity> listEntities);
     @Named("LanguageMapper.toListEntities")
-    Collection<LanguageEntity> toListEntities(Collection<LanguageDto> listDtos);
+    List<LanguageEntity> toListEntities(List<LanguageDto> listDtos);
     @Named("LanguageMapper.updateEntityFromDto")
     void updateEntityFromDto(LanguageDto dto, @MappingTarget LanguageEntity entity);
     @Named("LanguageMapper.updateEntityFromDtoIgnoredId")
