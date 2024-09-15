@@ -1,0 +1,48 @@
+server:
+  port:
+    8090
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes: # filters: # los "filters" permiten manipulación de solicitudes y respuestas HTTP que pasan a través del gateway.
+        - id: z4-master-data-service
+          uri: lb://z4-master-data-service
+          predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
+            - Path=/z4-master-data-service/v3/api-docs, /api/countries/**, /api/genres/**, /api/languages/**
+        - id: z4-catalogs-service
+          uri: lb://z4-catalogs-service
+          predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
+            - Path=/z4-catalogs-service/v3/api-docs, /api/category-products/**, /api/countries/**, /api/genres/**, /api/languages/**, /api/audiences/**, /api/type-status-film-shows/**, /api/studios/**, /api/movies/**, /api/products/**, /api/customers/**
+    loadbalancer: # deshabilitar el balanceador de carga "Ribbon" de "Spring Cloud Netflix", debido a que usaremos el moderno llamado "Spring Cloud Balancer".
+      ribbon:
+        enabled: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+          jwt-set:-uri: ${JWT_SET_URI:http://localhost:9090/realms/z4movies-dev/protocol/openid-connect/certs}
+
+eureka: # indicando UBICACION FISICA del servidor eureka.
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+
+
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+    path: /swagger-ui/index.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /z4-master-data-service/v3/api-docs
+        name: Master Data Service
+        primaryName: Master Data Service
+      - url: /z4-catalogs-service/v3/api-docs
+        name: Catalogs Service
+        primaryName: Catalogs Service
