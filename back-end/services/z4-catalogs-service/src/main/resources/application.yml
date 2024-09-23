@@ -1,9 +1,9 @@
 spring:
   application:
-    name: z4-master-data-service
+    name: z4-catalogs-service
 
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost:5432}/${DB_DATABASE:db_z4f_master_data}
+    url: jdbc:postgresql://${DB_HOST:localhost:5432}/${DB_DATABASE:db_z4f_catalogs}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:saksah}
     driver-class-name: org.postgresql.Driver
@@ -13,7 +13,7 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: ${DDL_AUTO:none}
+      ddl-auto: ${DDL_AUTO:create-drop}
     properties:
       hibernate:
         format_sql: true
@@ -28,7 +28,7 @@ spring:
           issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
 
 server:
-  port: ${PORT:8001}
+  port: ${PORT:8002}
 
 logging:
   level:
@@ -43,13 +43,13 @@ eureka:
 
 openapi:
   service:
-    title: Master Data Service
+    title: Catalogs Service
     version: 1.0.0
     url: http://localhost:8090
 
 springdoc:
   api-docs:
-    path: /z4-master-data-service/v3/api-docs
+    path: /z4-catalogs-service/v3/api-docs
   swagger-ui:
-    path: /z4-master-data-service/swagger-ui/index.html
+    path: /z4-catalogs-service/swagger-ui/index.html
     operationsSorter: method
