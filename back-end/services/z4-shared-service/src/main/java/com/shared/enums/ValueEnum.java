@@ -1,5 +1,8 @@
 package com.shared.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ValueEnum {
     NAME("nombre"),
     CODE("código"),
@@ -46,10 +49,6 @@ public enum ValueEnum {
 
     @Override
     public String toString() {
-        return value;
-    }
-
-    public String getValue() {
         return value;
     }
 

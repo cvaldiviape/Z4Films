@@ -43,7 +43,7 @@ eureka:
 
 openapi:
   service:
-    title: Catalogs Service
+    title: Master Data Service
     version: 1.0.0
     url: http://localhost:8090
 

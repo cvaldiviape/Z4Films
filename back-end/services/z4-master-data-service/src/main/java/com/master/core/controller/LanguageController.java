@@ -13,19 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/languages")
 public class LanguageController implements ILanguageController<LanguageDto, Integer> {
 
-    private final GenericFindByIdService<LanguageEntity, LanguageDto, Integer> findByIdService;
     private final GenericFindAllService<LanguageEntity, LanguageDto, Integer> findAllService;
+    private final GenericFindAllByListIdsService<LanguageEntity, LanguageDto, Integer> findAllByListIdsService;
+    private final GenericFindByIdService<LanguageEntity, LanguageDto, Integer> findByIdService;
     private final GenericCreateService<LanguageEntity, LanguageDto, Integer> createService;
     private final GenericUpdateService<LanguageEntity, LanguageDto, Integer> updateService;
     private final GenericDeleteService<LanguageEntity, LanguageDto, Integer> deleteService;
 
     public LanguageController(
             @Qualifier("findAllLanguageImpl") GenericFindAllService<LanguageEntity, LanguageDto, Integer> findAllService,
+            @Qualifier("findAllByListIdsLanguageImpl") GenericFindAllByListIdsService<LanguageEntity, LanguageDto, Integer> findAllByListIdsService,
             @Qualifier("findByIdLanguageImpl") GenericFindByIdService<LanguageEntity, LanguageDto, Integer> findByIdService,
             @Qualifier("createLanguageImpl") GenericCreateService<LanguageEntity, LanguageDto, Integer> createService,
             @Qualifier("updateLanguageImpl") GenericUpdateService<LanguageEntity, LanguageDto, Integer> updateService,
             @Qualifier("deleteLanguageImpl") GenericDeleteService<LanguageEntity, LanguageDto, Integer> deleteService) {
         this.findAllService = findAllService;
+        this.findAllByListIdsService = findAllByListIdsService;
         this.findByIdService = findByIdService;
         this.createService = createService;
         this.updateService = updateService;
@@ -35,6 +38,11 @@ public class LanguageController implements ILanguageController<LanguageDto, Inte
     @Override
     public FindAllService<LanguageDto> getFindAllService() {
         return this.findAllService;
+    }
+
+    @Override
+    public FindAllByListIdsService<LanguageDto, Integer> getFindAllByListIdsService() {
+        return this.findAllByListIdsService;
     }
 
     @Override

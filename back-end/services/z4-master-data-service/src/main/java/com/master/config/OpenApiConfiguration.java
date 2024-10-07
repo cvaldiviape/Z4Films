@@ -31,7 +31,7 @@ public class OpenApiConfiguration {
         // se utilizará un esquema de seguridad de tipo HTTP con el formato "bearer" (que es típico para tokens JWT).
         SecurityScheme securityScheme = new SecurityScheme();
         securityScheme.type(SecurityScheme.Type.HTTP);
-        securityScheme.scheme("bearer"); // es necesario definir el escheme "bearer", caso contrario colocara un valor
+        securityScheme.scheme("bearer"); // es necesario definir el schema "bearer", caso contrario colocara un valor
         // invalido como "sflsjhkfs" el swagger indicara que es un schema invalido
         securityScheme.bearerFormat("JWT"); // Si proporcionas un valor diferente a "JWT", estarías indicando que el
         // token de portador sigue un formato específico definido por ti o por tu

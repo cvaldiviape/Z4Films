@@ -5,7 +5,6 @@ import com.shared.dto.custom.CommonDto;
 import com.shared.utils.filter.Searchable;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor

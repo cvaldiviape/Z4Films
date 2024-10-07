@@ -13,19 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/countries")
 public class CountryController implements ICountryController<CountryDto, Integer> {
 
-    private final GenericFindByIdService<CountryEntity, CountryDto, Integer> findByIdService;
     private final GenericFindAllService<CountryEntity, CountryDto, Integer> findAllService;
+    private final GenericFindAllByListIdsService<CountryEntity, CountryDto, Integer> findAllByListIdsService;
+    private final GenericFindByIdService<CountryEntity, CountryDto, Integer> findByIdService;
     private final GenericCreateService<CountryEntity, CountryDto, Integer> createService;
     private final GenericUpdateService<CountryEntity, CountryDto, Integer> updateService;
     private final GenericDeleteService<CountryEntity, CountryDto, Integer> deleteService;
 
     public CountryController(
             @Qualifier("findAllCountryImpl") GenericFindAllService<CountryEntity, CountryDto, Integer> findAllService,
+            @Qualifier("findAllByListIdsCountryImpl") GenericFindAllByListIdsService<CountryEntity, CountryDto, Integer> findAllByListIdsService,
             @Qualifier("findByIdCountryImpl") GenericFindByIdService<CountryEntity, CountryDto, Integer> findByIdService,
             @Qualifier("createCountryImpl") GenericCreateService<CountryEntity, CountryDto, Integer> createService,
             @Qualifier("updateCountryImpl") GenericUpdateService<CountryEntity, CountryDto, Integer> updateService,
             @Qualifier("deleteCountryImpl") GenericDeleteService<CountryEntity, CountryDto, Integer> deleteService) {
         this.findAllService = findAllService;
+        this.findAllByListIdsService = findAllByListIdsService;
         this.findByIdService = findByIdService;
         this.createService = createService;
         this.updateService = updateService;
@@ -35,6 +38,11 @@ public class CountryController implements ICountryController<CountryDto, Integer
     @Override
     public FindAllService<CountryDto> getFindAllService() {
         return this.findAllService;
+    }
+
+    @Override
+    public FindAllByListIdsService<CountryDto, Integer> getFindAllByListIdsService() {
+        return this.findAllByListIdsService;
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class CommonDto {
+public abstract class CommonDto {
 
     private String code;
     private String name;
