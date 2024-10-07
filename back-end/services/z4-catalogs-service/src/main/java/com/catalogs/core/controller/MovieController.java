@@ -2,17 +2,10 @@ package com.catalogs.core.controller;
 
 import com.catalogs.core.controller.interfaces.IMovieController;
 import com.shared.core.service.*;
-import com.shared.core.service.impl.*;
 import com.shared.dto.external.catalog.MovieDto;
-import com.shared.dto.external.master.CountryDto;
-import com.shared.enums.ControllerMessageEnum;
-import com.shared.utils.response.ResponseDto;
-import com.shared.utils.response.ResponseUtil;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/movies")

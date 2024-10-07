@@ -1,12 +1,12 @@
-package com.catalogs.core.service.movie;
+package com.catalogs.core.service.serie;
 
-import com.catalogs.core.entity.MovieEntity;
-import com.catalogs.core.entity.mapper.MovieMapper;
-import com.catalogs.core.repository.MovieRepository;
+import com.catalogs.core.entity.SerieEntity;
+import com.catalogs.core.entity.mapper.SerieMapper;
+import com.catalogs.core.repository.SerieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
 import com.shared.core.service.FindAllService;
-import com.shared.dto.external.catalog.MovieDto;
+import com.shared.dto.external.catalog.SerieDto;
 import com.shared.dto.external.master.GenreDto;
 import com.shared.dto.external.master.LanguageDto;
 import com.shared.enums.ValueEnum;
@@ -21,49 +21,49 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@Service("findAllMovieImpl")
-public class FindAllMovieImpl implements FindAllService<MovieDto> {
+@Service("findAllSerieImpl")
+public class FindAllSerieImpl implements FindAllService<SerieDto> {
 
-    private final MovieRepository movieRepository;
-    private final MovieMapper movieMapper;
+    private final SerieRepository serieRepository;
+    private final SerieMapper serieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
 
     @Override
-    public List<MovieDto> findAll() {
-        List<MovieEntity> listMovieEntities = this.movieRepository.findAll();
+    public List<SerieDto> findAll() {
+        List<SerieEntity> listSerieEntities = this.serieRepository.findAll();
 
         Set<Integer> listGenreIdsFinal = new HashSet<>();
         Set<Integer> listLanguageIdsFinal = new HashSet<>();
 
-        for (MovieEntity movieEntity : listMovieEntities) {
-            Set<Integer> listGenreIds = this.getListGenresIds(movieEntity);
+        for (SerieEntity serieEntity : listSerieEntities) {
+            Set<Integer> listGenreIds = this.getListGenresIds(serieEntity);
             listGenreIdsFinal.addAll(listGenreIds);
 
-            Set<Integer> listLanguageIds = this.getListLanguageIds(movieEntity);
+            Set<Integer> listLanguageIds = this.getListLanguageIds(serieEntity);
             listLanguageIdsFinal.addAll(listLanguageIds);
         }
 
         List<GenreDto> listGenres = this.findAllGenres(listGenreIdsFinal);
         List<LanguageDto> listLanguages = this.findAllLanguages(listLanguageIdsFinal);
 
-        return listMovieEntities.stream()
-                .map(movieEntity -> {
-                    MovieDto movieDto = this.movieMapper.toDto(movieEntity);
-                    this.setDataListGenres(movieDto, movieEntity, listGenres);
-                    this.setDataListLanguages(movieDto, movieEntity, listLanguages);
-                    return movieDto;
+        return listSerieEntities.stream()
+                .map(serieEntity -> {
+                    SerieDto serieDto = this.serieMapper.toDto(serieEntity);
+                    this.setDataListGenres(serieDto, serieEntity, listGenres);
+                    this.setDataListLanguages(serieDto, serieEntity, listLanguages);
+                    return serieDto;
                 }).collect(Collectors.toList());
     }
 
-    private Set<Integer> getListGenresIds(MovieEntity movieEntity) {
-        return movieEntity.getListGenres().stream()
+    private Set<Integer> getListGenresIds(SerieEntity serieEntity) {
+        return serieEntity.getListGenres().stream()
                 .map((language) -> language.getId().getGenreId())
                 .collect(Collectors.toSet());
     }
 
-    private Set<Integer> getListLanguageIds(MovieEntity movieEntity) {
-        return movieEntity.getListLanguages().stream()
+    private Set<Integer> getListLanguageIds(SerieEntity serieEntity) {
+        return serieEntity.getListLanguages().stream()
                 .map((language) -> language.getId().getLanguageId())
                 .collect(Collectors.toSet());
     }
@@ -78,14 +78,14 @@ public class FindAllMovieImpl implements FindAllService<MovieDto> {
         return FeignUtil.extractsDataList(respose, LanguageDto.class);
     }
 
-    private void setDataListGenres(MovieDto movieDto, MovieEntity movieEntity, List<GenreDto> listGenres) {
-        Set<GenreDto> listGenreDtos = this.getListGenres(movieEntity);
+    private void setDataListGenres(SerieDto serieDto, SerieEntity serieEntity, List<GenreDto> listGenres) {
+        Set<GenreDto> listGenreDtos = this.getListGenres(serieEntity);
         listGenreDtos = this.setComplementaryDataListGenres(listGenres, listGenreDtos);
-        movieDto.setListGenres(listGenreDtos);
+        serieDto.setListGenres(listGenreDtos);
     }
 
-    private Set<GenreDto> getListGenres(MovieEntity movieEntity) {
-        return movieEntity.getListGenres().stream()
+    private Set<GenreDto> getListGenres(SerieEntity serieEntity) {
+        return serieEntity.getListGenres().stream()
                 .map((genreEntity) -> {
                     return GenreDto.builder()
                             .genreId(genreEntity.getId().getGenreId())
@@ -103,14 +103,14 @@ public class FindAllMovieImpl implements FindAllService<MovieDto> {
                 })).collect(Collectors.toSet());
     }
 
-    private void setDataListLanguages(MovieDto movieDto, MovieEntity movieEntity, List<LanguageDto> listLanguages) {
-        Set<LanguageDto> listLanguageDtos = this.getListLanguages(movieEntity);
+    private void setDataListLanguages(SerieDto serieDto, SerieEntity serieEntity, List<LanguageDto> listLanguages) {
+        Set<LanguageDto> listLanguageDtos = this.getListLanguages(serieEntity);
         listLanguageDtos = this.setComplementaryDataListLanguages(listLanguageDtos, listLanguages);
-        movieDto.setListLanguages(listLanguageDtos);
+        serieDto.setListLanguages(listLanguageDtos);
     }
 
-    private Set<LanguageDto> getListLanguages(MovieEntity movieEntity) {
-        return movieEntity.getListLanguages().stream()
+    private Set<LanguageDto> getListLanguages(SerieEntity serieEntity) {
+        return serieEntity.getListLanguages().stream()
                 .map((languageEntity) -> {
                     return LanguageDto.builder()
                             .languageId(languageEntity.getId().getLanguageId())

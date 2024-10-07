@@ -1,10 +1,7 @@
 package com.catalogs.core.service.movie;
 
 import com.catalogs.core.entity.MovieEntity;
-import com.catalogs.core.entity.MovieGenreEntity;
 import com.catalogs.core.entity.MovieLanguageEntity;
-import com.catalogs.core.entity.ids.MovieGenreId;
-import com.catalogs.core.entity.ids.MovieLanguageId;
 import com.catalogs.core.entity.mapper.MovieMapper;
 import com.catalogs.core.repository.MovieRepository;
 import com.catalogs.external.client.GenreClient;
@@ -16,12 +13,9 @@ import com.shared.dto.external.master.LanguageDto;
 import com.shared.enums.ValueEnum;
 import com.shared.utils.FeignUtil;
 import com.shared.utils.ValidateUtil;
-import com.shared.utils.filter.FilterUtil;
 import com.shared.utils.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
