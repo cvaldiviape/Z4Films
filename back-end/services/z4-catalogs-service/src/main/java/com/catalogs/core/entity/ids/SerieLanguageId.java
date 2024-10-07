@@ -22,7 +22,7 @@ public class SerieLanguageId {
     @Column(name = "language_id")
     private Integer languageId;
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private AudioFormatEnum type;  // Enum for language type (SUBTITLED, DUBBED, ORIGINAL)
+    @Column(name = "audio_format")
+    private AudioFormatEnum audioFormat;  // Enum for language type (SUBTITLED, DUBBED, ORIGINAL)
 
 }

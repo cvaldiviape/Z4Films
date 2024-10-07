@@ -14,6 +14,7 @@ public class SerieLanguageEntity {
 
     @EmbeddedId
     private SerieLanguageId id; // Clave compuesta que incluye serieId y genreId
+    @EqualsAndHashCode.Exclude // Excluye `serie` del cálculo de `hashCode` y `equals` para evitar recursividad
     @ManyToOne
     @MapsId("serieId") // Vincula el campo serieId en SerieGenreId con SerieEntity
     @JoinColumn(name = "serie_id")

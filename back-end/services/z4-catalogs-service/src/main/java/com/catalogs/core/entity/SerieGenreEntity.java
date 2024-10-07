@@ -3,6 +3,7 @@ package com.catalogs.core.entity;
 import com.catalogs.core.entity.ids.SerieGenreId;
 import jakarta.persistence.*;
 import lombok.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +14,7 @@ public class SerieGenreEntity {
 
     @EmbeddedId
     private SerieGenreId id; // Clave compuesta que incluye serieId y genreId
+    @EqualsAndHashCode.Exclude // Excluye `serie` del cálculo de `hashCode` y `equals` para evitar recursividad
     @ManyToOne
     @MapsId("serieId") // Vincula el campo serieId en SerieGenreId con SerieEntity
     @JoinColumn(name = "serie_id")

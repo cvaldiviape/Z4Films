@@ -24,6 +24,7 @@ public enum ValueEnum {
     PROVINCE("Province"),
     STUDIO("Estudio"),
     MOVIE("Pelicula"),
+    SERIE("Serie"),
     CUSTOMER("Cliente"),
     LIST_CATEGORY("Lista de categorias"),
     LIST_COUNTRY("Lista de paises"),
@@ -39,7 +40,8 @@ public enum ValueEnum {
     LIST_DISTRICT("Lista de distritos"),
     LIST_PROVINCE("Lista de provincias"),
     LIST_STUDIO("Lista de estudios"),
-    LIST_MOVIE("Lista de peliculas");
+    LIST_MOVIE("Lista de peliculas"),
+    LIST_SERIE("Lista de peliculas");
 
     private final String value;
 
