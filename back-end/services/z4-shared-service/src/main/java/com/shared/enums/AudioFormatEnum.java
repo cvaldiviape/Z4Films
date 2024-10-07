@@ -1,6 +1,6 @@
 package com.shared.enums;
 
-public enum LanguageEnum {
+public enum AudioFormatEnum {
     SUBTITLED,
     DUBBED,
     ORIGINAL
