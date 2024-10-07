@@ -14,6 +14,7 @@ public class MovieLanguageEntity {
 
     @EmbeddedId
     private MovieLanguageId id; // Clave compuesta que incluye movieId y genreId
+    @EqualsAndHashCode.Exclude // Excluye `movie` del cálculo de `hashCode` y `equals` para evitar recursividad
     @ManyToOne
     @MapsId("movieId") // Vincula el campo movieId en MovieGenreId con MovieEntity
     @JoinColumn(name = "movie_id")

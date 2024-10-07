@@ -1,6 +1,6 @@
 package com.catalogs.core.entity.ids;
 
-import com.shared.enums.LanguageEnum;
+import com.shared.enums.AudioFormatEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -22,7 +22,7 @@ public class MovieLanguageId {
     @Column(name = "language_id")
     private Integer languageId;
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private LanguageEnum type;  // Enum for language type (SUBTITLED, DUBBED, ORIGINAL)
+    @Column(name = "audio_format")
+    private AudioFormatEnum audioFormat;  // Enum for language type (SUBTITLED, DUBBED, ORIGINAL)
 
 }

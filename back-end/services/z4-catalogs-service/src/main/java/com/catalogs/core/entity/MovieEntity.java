@@ -23,9 +23,27 @@ public class MovieEntity extends MediaEntity {
     private Integer movieId;
     @Column(name = "duration", nullable = false)
     private LocalTime duration;
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private Set<MovieGenreEntity> listGenres = new HashSet<>();
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private Set<MovieLanguageEntity> listLanguages = new HashSet<>();
+
+    public void setGenres(Set<MovieGenreEntity> listGenres) {
+        if (this.listGenres == null) {
+            this.listGenres = listGenres;
+        } else {
+            this.listGenres.retainAll(listGenres);
+            this.listGenres.addAll(listGenres);
+        }
+    }
+
+    public void setLanguages(Set<MovieLanguageEntity> listLanguages) {
+        if (this.listLanguages == null) {
+            this.listLanguages = listLanguages;
+        } else {
+            this.listLanguages.retainAll(listLanguages);
+            this.listLanguages.addAll(listLanguages);
+        }
+    }
 
 }
