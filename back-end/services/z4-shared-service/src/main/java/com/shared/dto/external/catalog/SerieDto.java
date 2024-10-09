@@ -18,7 +18,5 @@ import java.util.Set;
 public class SerieDto extends MediaDto {
 
     private Integer serieId;
-    private Set<GenreDto> listGenres = new HashSet<>();
-    private Set<LanguageDto> listLanguages = new HashSet<>();
 
 }
