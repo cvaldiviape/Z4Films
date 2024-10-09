@@ -20,7 +20,5 @@ public class MovieDto extends MediaDto {
 
     private Integer movieId;
     private LocalTime duration;
-    private Set<GenreDto> listGenres = new HashSet<>();
-    private Set<LanguageDto> listLanguages = new HashSet<>();
 
 }
