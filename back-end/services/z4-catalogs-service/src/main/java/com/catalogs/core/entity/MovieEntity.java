@@ -15,7 +15,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true) // Incluye la lógica de la clase padre
 @Entity
 @Table(name = "movies")
-public class MovieEntity extends MediaEntity {
+public class MovieEntity extends MediaEntity<MovieGenreEntity, MovieLanguageEntity> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,22 +28,24 @@ public class MovieEntity extends MediaEntity {
     @OneToMany(mappedBy = "movie", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private Set<MovieLanguageEntity> listLanguages = new HashSet<>();
 
-    public void setGenres(Set<MovieGenreEntity> listGenres) {
-        if (this.listGenres == null) {
-            this.listGenres = listGenres;
-        } else {
-            this.listGenres.retainAll(listGenres);
-            this.listGenres.addAll(listGenres);
-        }
+    @Override
+    public Set<MovieGenreEntity> getListGenresCustom() {
+        return this.listGenres;
     }
 
-    public void setLanguages(Set<MovieLanguageEntity> listLanguages) {
-        if (this.listLanguages == null) {
-            this.listLanguages = listLanguages;
-        } else {
-            this.listLanguages.retainAll(listLanguages);
-            this.listLanguages.addAll(listLanguages);
-        }
+    @Override
+    public void setListGenresCustom(Set<MovieGenreEntity> listGenres) {
+        this.listGenres = listGenres;
+    }
+
+    @Override
+    public Set<MovieLanguageEntity> getListLanguagesCustom() {
+        return this.listLanguages;
+    }
+
+    @Override
+    public void setListLanguagesCustom(Set<MovieLanguageEntity> listLanguages) {
+        this.listLanguages = listLanguages;
     }
 
 }
