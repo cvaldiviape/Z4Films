@@ -40,7 +40,7 @@ public class UpdateCountryImpl extends GenericUpdateService<CountryEntity, Count
     }
 
     @Override
-    public void verifyUnique(Integer countryId, CountryDto countryDto) {
+    public void validate(Integer countryId, CountryDto countryDto) {
         Boolean existsCode = this.countryRepository.existsByCodeAndCountryIdNot(countryDto.getCode(), countryId);
         Boolean existsName = this.countryRepository.existsByNameAndCountryIdNot(countryDto.getName(), countryId);
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, countryDto.getCode());

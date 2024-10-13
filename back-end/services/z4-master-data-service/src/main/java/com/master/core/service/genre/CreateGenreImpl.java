@@ -34,7 +34,7 @@ public class CreateGenreImpl extends GenericCreateService<GenreEntity, GenreDto,
     }
 
     @Override
-    public void verifyUnique(GenreDto genreDto) {
+    public void validate(GenreDto genreDto) {
         Boolean existsCode = this.genreRepository.existsByCode(genreDto.getCode());
         Boolean existsName = this.genreRepository.existsByName(genreDto.getName());
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, genreDto.getCode());

@@ -34,7 +34,7 @@ public class CreateCountryImpl extends GenericCreateService<CountryEntity, Count
     }
 
     @Override
-    public void verifyUnique(CountryDto countryDto) {
+    public void validate(CountryDto countryDto) {
         Boolean existsCode = this.countryRepository.existsByCode(countryDto.getCode());
         Boolean existsName = this.countryRepository.existsByName(countryDto.getName());
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, countryDto.getCode());

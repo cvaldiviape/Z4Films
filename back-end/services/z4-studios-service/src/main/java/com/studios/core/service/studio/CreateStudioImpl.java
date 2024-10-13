@@ -34,7 +34,7 @@ public class CreateStudioImpl extends GenericCreateService<StudioEntity, StudioD
     }
 
     @Override
-    public void verifyUnique(StudioDto studioDto) {
+    public void validate(StudioDto studioDto) {
         Boolean existsName = this.studioRepository.existsByName(studioDto.getName());
         ValidateUtil.validateUnique(existsName, ValueEnum.NAME, studioDto.getName());
     }

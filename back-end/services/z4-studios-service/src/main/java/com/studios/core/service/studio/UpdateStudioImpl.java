@@ -40,7 +40,7 @@ public class UpdateStudioImpl extends GenericUpdateService<StudioEntity, StudioD
     }
 
     @Override
-    public void verifyUnique(Integer studioId, StudioDto studioDto) {
+    public void validate(Integer studioId, StudioDto studioDto) {
         Boolean existsName = this.studioRepository.existsByNameAndStudioIdNot(studioDto.getName(), studioId);
         ValidateUtil.validateUnique(existsName, ValueEnum.NAME, studioDto.getName());
     }
