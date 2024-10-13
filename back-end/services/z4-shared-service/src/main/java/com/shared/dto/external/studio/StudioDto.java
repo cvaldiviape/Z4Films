@@ -1,5 +1,6 @@
 package com.shared.dto.external.studio;
 
+import com.shared.dto.external.master.CountryDto;
 import jakarta.persistence.Column;
 import lombok.*;
 import java.time.LocalDate;
@@ -17,5 +18,6 @@ public class StudioDto {
     private String description;
     private Boolean active;
     private Integer countryId;
+    private CountryDto country;
 
 }

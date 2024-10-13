@@ -13,7 +13,7 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: ${DDL_AUTO:none}
+      ddl-auto: ${DDL_AUTO:create-drop}
     properties:
       hibernate:
         format_sql: true
@@ -53,3 +53,7 @@ springdoc:
   swagger-ui:
     path: /z4-studios-service/swagger-ui/index.html
     operationsSorter: method
+
+feign:
+  client:
+    url: ${GATEWAY:http://localhost:8090}
