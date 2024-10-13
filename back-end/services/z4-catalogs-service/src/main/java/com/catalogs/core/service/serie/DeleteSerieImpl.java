@@ -32,8 +32,8 @@ public class DeleteSerieImpl extends GenericDeleteService<SerieEntity, SerieDto,
     }
 
     @Override
-    public SerieEntity findEntityById(Integer idSerie) {
-        return this.serieRepository.findById(idSerie)
+    public SerieEntity findEntityById(Integer serieId) {
+        return this.serieRepository.findById(serieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.SERIE.getValue()));
     }
 

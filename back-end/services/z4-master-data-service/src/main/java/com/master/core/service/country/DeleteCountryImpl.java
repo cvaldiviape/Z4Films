@@ -29,9 +29,9 @@ public class DeleteCountryImpl extends GenericDeleteService<CountryEntity, Count
     }
 
     @Override
-    public CountryEntity findEntityById(Integer idCountry) {
-        return this.countryRepository.findById(idCountry)
-                .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.COUNTRY.getValue(), idCountry));
+    public CountryEntity findEntityById(Integer countryId) {
+        return this.countryRepository.findById(countryId)
+                .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.COUNTRY.getValue(), countryId));
     }
 
 }

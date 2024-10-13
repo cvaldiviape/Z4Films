@@ -5,20 +5,17 @@ import com.master.core.entity.mapper.CountryMapper;
 import com.master.core.repository.CountryRepository;
 import com.shared.core.service.impl.GenericFindAllByListIdsService;
 import com.shared.dto.external.master.CountryDto;
+import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+@AllArgsConstructor
 @Service("findAllByListIdsCountryImpl")
 public class FindAllByListIdsCountryImpl extends GenericFindAllByListIdsService<CountryEntity, CountryDto, Integer> {
 
     private final CountryRepository countryRepository;
     private final CountryMapper countryMapper;
-
-    public FindAllByListIdsCountryImpl(CountryRepository roomRespository, CountryMapper roomMapper) {
-        this.countryRepository = roomRespository;
-        this.countryMapper = roomMapper;
-    }
 
     @Override
     public JpaRepository<CountryEntity, Integer> getJpaRepository() {
