@@ -15,6 +15,10 @@ spring:
           uri: lb://z4-catalogs-service
           predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
             - Path=/z4-catalogs-service/v3/api-docs, /api/movies/**, /api/series/**
+        - id: z4-studios-service
+          uri: lb://z4-studios-service
+          predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
+            - Path=/z4-studios-service/v3/api-docs, /api/studios/**
     loadbalancer: # deshabilitar el balanceador de carga "Ribbon" de "Spring Cloud Netflix", debido a que usaremos el moderno llamado "Spring Cloud Balancer".
       ribbon:
         enabled: false
@@ -46,3 +50,6 @@ springdoc:
       - url: /z4-catalogs-service/v3/api-docs
         name: Catalogs Service
         primaryName: Catalogs Service
+      - url: /z4-studios-service/v3/api-docs
+        name: Studios Service
+        primaryName: Studios Service
