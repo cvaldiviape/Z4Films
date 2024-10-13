@@ -32,8 +32,8 @@ public class DeleteMovieImpl extends GenericDeleteService<MovieEntity, MovieDto,
     }
 
     @Override
-    public MovieEntity findEntityById(Integer idMovie) {
-        return this.movieRepository.findById(idMovie)
+    public MovieEntity findEntityById(Integer movieId) {
+        return this.movieRepository.findById(movieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.MOVIE.getValue()));
     }
 

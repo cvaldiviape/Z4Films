@@ -1,6 +1,9 @@
 package com.shared.dto.custom;
 
+import com.shared.enums.AudienceEnum;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,8 +27,9 @@ public abstract class MediaEntity<GENRE, LANGUAGE> {
     private Integer year;
     @Column(name = "url_image", nullable = false)
     private String urlImage;
-    @Column(name = "audience_id", nullable = false)
-    private Integer audienceId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "audience", nullable = false)
+    private AudienceEnum audience;
     @Column(name = "studio_id", nullable = false)
     private Integer studioId;
 

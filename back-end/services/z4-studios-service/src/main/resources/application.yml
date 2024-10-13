@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: z4-studios-service
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost:5432}/${DB_DATABASE:db_z4f_studios}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:saksah}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: ${DDL_AUTO:create-drop}
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+
+server:
+  port: ${PORT:8003}
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+
+openapi:
+  service:
+    title: Studios Service
+    version: 1.0.0
+    url: http://localhost:8090
+
+springdoc:
+  api-docs:
+    path: /z4-studios-service/v3/api-docs
+  swagger-ui:
+    path: /z4-studios-service/swagger-ui/index.html
+    operationsSorter: method
+
+feign:
+  client:
+    url: ${GATEWAY:http://localhost:8090}

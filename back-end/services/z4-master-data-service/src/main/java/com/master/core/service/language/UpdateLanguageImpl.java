@@ -40,7 +40,7 @@ public class UpdateLanguageImpl extends GenericUpdateService<LanguageEntity, Lan
     }
 
     @Override
-    public void verifyUnique(Integer languageId, LanguageDto languageDto) {
+    public void validate(Integer languageId, LanguageDto languageDto) {
         Boolean existsCode = this.languageRepository.existsByCodeAndLanguageIdNot(languageDto.getCode(), languageId);
         Boolean existsName = this.languageRepository.existsByNameAndLanguageIdNot(languageDto.getName(), languageId);
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, languageDto.getCode());

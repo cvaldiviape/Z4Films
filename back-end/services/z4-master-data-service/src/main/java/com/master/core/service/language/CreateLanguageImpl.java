@@ -34,7 +34,7 @@ public class CreateLanguageImpl extends GenericCreateService<LanguageEntity, Lan
     }
 
     @Override
-    public void verifyUnique(LanguageDto languageDto) {
+    public void validate(LanguageDto languageDto) {
         Boolean existsCode = this.languageRepository.existsByCode(languageDto.getCode());
         Boolean existsName = this.languageRepository.existsByName(languageDto.getName());
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, languageDto.getCode());

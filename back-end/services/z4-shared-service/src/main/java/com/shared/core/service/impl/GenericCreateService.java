@@ -13,11 +13,11 @@ public abstract class GenericCreateService<ENTITY, DTO, ID> implements CreateSer
 
     public abstract ENTITY toEntity(DTO dto);
 
-    public abstract void verifyUnique(DTO dto);
+    public abstract void validate(DTO dto);
 
     @Override
     public DTO create(DTO dto) {
-        this.verifyUnique(dto);
+        this.validate(dto);
         ENTITY entity = this.toEntity(dto);
         ENTITY entityCreated = this.getJpaRepository().save(entity);
         return this.toDto(entityCreated);

@@ -40,7 +40,7 @@ public class UpdateGenreImpl extends GenericUpdateService<GenreEntity, GenreDto,
     }
 
     @Override
-    public void verifyUnique(Integer genreId, GenreDto genreDto) {
+    public void validate(Integer genreId, GenreDto genreDto) {
         Boolean existsCode = this.genreRepository.existsByCodeAndGenreIdNot(genreDto.getCode(), genreId);
         Boolean existsName = this.genreRepository.existsByNameAndGenreIdNot(genreDto.getName(), genreId);
         ValidateUtil.validateUnique(existsCode, ValueEnum.CODE, genreDto.getCode());
