@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: z4nosql-catalogs-service
+
+  data:
+    mongodb:
+      host: ${DB_HOST:localhost}
+      port: ${DB_PORT:27017}
+      database: ${DB_DATABASE:db_z4f_catalogs}
+      username: ${DB_USERNAME:yaksha}
+      password: ${DB_PASSWORD:bloodyroar}
+      authentication-database: admin # si es necesario autenticarte en una base de datos distinta
+#      uri: mongodb://${DB_USERNAME:your_mongodb_username}:${DB_PASSWORD:your_mongodb_password}@${DB_HOST:localhost}:${DB_PORT:27017}/${DB_DATABASE:db_z4f_catalogs}?authSource=admin
+
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+
+server:
+  port: ${PORT:7001}
+
+logging:
+  level:
+    org:
+      mongodb:
+        driver: debug
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+
+openapi:
+  service:
+    title: NoSQL Catalogs Service
+    version: 1.0.0
+    url: http://localhost:8090
+
+springdoc:
+  api-docs:
+    path: /z4nosql-catalogs-service/v3/api-docs
+  swagger-ui:
+    path: /z4nosql-catalogs-service/swagger-ui/index.html
+    operationsSorter: method
