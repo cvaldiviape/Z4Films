@@ -19,12 +19,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
 @Service("updateMovieImpl")
-public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, Integer> {
+public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, UUID> {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
@@ -32,7 +33,7 @@ public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity,
     private final LanguageClient languageClient;
 
     @Override
-    public JpaRepository<MovieEntity, Integer> getJpaRepository() {
+    public JpaRepository<MovieEntity, UUID> getJpaRepository() {
         return this.movieRepository;
     }
 
@@ -57,8 +58,8 @@ public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity,
     }
 
     @Override
-    public MovieEntity findEntityById(Integer id) {
-        return this.movieRepository.findById(id)
+    public MovieEntity findEntityById(UUID movieId) {
+        return this.movieRepository.findById(movieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.MOVIE.getValue()));
     }
 

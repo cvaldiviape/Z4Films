@@ -12,17 +12,18 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 @Transactional
 @AllArgsConstructor
 @Service("deleteSerieImpl")
-public class DeleteSerieImpl extends GenericDeleteService<SerieEntity, SerieDto, Integer> {
+public class DeleteSerieImpl extends GenericDeleteService<SerieEntity, SerieDto, UUID> {
 
     private final SerieRepository serieRepository;
     private final SerieMapper serieMapper;
 
     @Override
-    public JpaRepository<SerieEntity, Integer> getJpaRepository() {
+    public JpaRepository<SerieEntity, UUID> getJpaRepository() {
         return this.serieRepository;
     }
 
@@ -32,7 +33,7 @@ public class DeleteSerieImpl extends GenericDeleteService<SerieEntity, SerieDto,
     }
 
     @Override
-    public SerieEntity findEntityById(Integer serieId) {
+    public SerieEntity findEntityById(UUID serieId) {
         return this.serieRepository.findById(serieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.SERIE.getValue()));
     }

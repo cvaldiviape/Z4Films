@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,9 +19,8 @@ import java.util.Set;
 public class MovieEntity extends MediaEntity<MovieGenreEntity, MovieLanguageEntity> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
-    private Integer movieId;
+    private UUID movieId;
     @Column(name = "duration", nullable = false)
     private LocalTime duration;
     @OneToMany(mappedBy = "movie", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)

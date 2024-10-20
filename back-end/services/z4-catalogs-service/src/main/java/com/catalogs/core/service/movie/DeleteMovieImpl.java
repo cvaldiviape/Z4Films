@@ -12,17 +12,18 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 @Transactional
 @AllArgsConstructor
 @Service("deleteMovieImpl")
-public class DeleteMovieImpl extends GenericDeleteService<MovieEntity, MovieDto, Integer> {
+public class DeleteMovieImpl extends GenericDeleteService<MovieEntity, MovieDto, UUID> {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
 
     @Override
-    public JpaRepository<MovieEntity, Integer> getJpaRepository() {
+    public JpaRepository<MovieEntity, UUID> getJpaRepository() {
         return this.movieRepository;
     }
 
@@ -32,7 +33,7 @@ public class DeleteMovieImpl extends GenericDeleteService<MovieEntity, MovieDto,
     }
 
     @Override
-    public MovieEntity findEntityById(Integer movieId) {
+    public MovieEntity findEntityById(UUID movieId) {
         return this.movieRepository.findById(movieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.MOVIE.getValue()));
     }

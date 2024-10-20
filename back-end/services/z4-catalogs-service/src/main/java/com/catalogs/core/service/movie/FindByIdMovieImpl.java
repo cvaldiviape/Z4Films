@@ -22,11 +22,12 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service("findByIdMovieImpl")
-public class FindByIdMovieImpl extends MediaGenericFindByIdService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, Integer> {
+public class FindByIdMovieImpl extends MediaGenericFindByIdService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, UUID> {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
@@ -34,7 +35,7 @@ public class FindByIdMovieImpl extends MediaGenericFindByIdService<MovieGenreEnt
     private final LanguageClient languageClient;
 
     @Override
-    public JpaRepository<MovieEntity, Integer> getJpaRepository() {
+    public JpaRepository<MovieEntity, UUID> getJpaRepository() {
         return this.movieRepository;
     }
 
@@ -54,8 +55,8 @@ public class FindByIdMovieImpl extends MediaGenericFindByIdService<MovieGenreEnt
     }
 
     @Override
-    public MovieEntity findEntityById(Integer id) {
-        return this.movieRepository.findById(id)
+    public MovieEntity findEntityById(UUID movieId) {
+        return this.movieRepository.findById(movieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.MOVIE.getValue()));
     }
 

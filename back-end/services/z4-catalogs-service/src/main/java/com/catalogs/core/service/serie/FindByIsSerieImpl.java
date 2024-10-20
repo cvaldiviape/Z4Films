@@ -22,11 +22,12 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service("findByIdSerieImpl")
-public class FindByIsSerieImpl extends MediaGenericFindByIdService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, Integer> {
+public class FindByIsSerieImpl extends MediaGenericFindByIdService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, UUID> {
 
     private final SerieRepository serieRepository;
     private final SerieMapper serieMapper;
@@ -34,7 +35,7 @@ public class FindByIsSerieImpl extends MediaGenericFindByIdService<SerieGenreEnt
     private final LanguageClient languageClient;
 
     @Override
-    public JpaRepository<SerieEntity, Integer> getJpaRepository() {
+    public JpaRepository<SerieEntity, UUID> getJpaRepository() {
         return this.serieRepository;
     }
 
@@ -54,8 +55,8 @@ public class FindByIsSerieImpl extends MediaGenericFindByIdService<SerieGenreEnt
     }
 
     @Override
-    public SerieEntity findEntityById(Integer id) {
-        return this.serieRepository.findById(id)
+    public SerieEntity findEntityById(UUID serieId) {
+        return this.serieRepository.findById(serieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.SERIE.getValue()));
     }
 

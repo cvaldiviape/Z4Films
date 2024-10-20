@@ -17,12 +17,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
 @Service("createSerieImpl")
-public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, Integer> {
+public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, UUID> {
 
     private final SerieRepository serieRepository;
     private final SerieMapper serieMapper;
@@ -30,7 +31,7 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     private final LanguageClient languageClient;
 
     @Override
-    public JpaRepository<SerieEntity, Integer> getJpaRepository() {
+    public JpaRepository<SerieEntity, UUID> getJpaRepository() {
         return this.serieRepository;
     }
 
@@ -52,6 +53,12 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     @Override
     public SerieEntity toEntity(SerieDto dto) {
         return this.serieMapper.toEntity(dto);
+    }
+
+    @Override
+    public void generateId(SerieEntity entity) {
+        UUID uuid = UUID.randomUUID();
+        entity.setSerieId(uuid);
     }
 
     @Override

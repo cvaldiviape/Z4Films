@@ -15,11 +15,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service("findAllMovieImpl")
-public class FindAllMovieImpl extends MediaGenericFindAllService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, Integer> {
+public class FindAllMovieImpl extends MediaGenericFindAllService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, UUID> {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
@@ -27,7 +28,7 @@ public class FindAllMovieImpl extends MediaGenericFindAllService<MovieGenreEntit
     private final LanguageClient languageClient;
 
     @Override
-    public JpaRepository<MovieEntity, Integer> getJpaRepository() {
+    public JpaRepository<MovieEntity, UUID> getJpaRepository() {
         return this.movieRepository;
     }
 

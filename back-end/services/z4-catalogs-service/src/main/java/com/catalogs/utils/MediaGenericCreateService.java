@@ -30,6 +30,7 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
     public abstract LanguageClient getLanguageClient();
     public abstract DTO toDto(ENTITY entity);
     public abstract ENTITY toEntity(DTO dto);
+    public abstract void generateId(ENTITY entity);
     public abstract Set<GENRE_ENTITY> buildListGenresEntities(Set<Integer> listGenreIds, ENTITY entity);
     public abstract Set<LANGUAGE_ENTITY> buildListLanguagesEntities(Set<LanguageDto> listLanguages, ENTITY entity);
 
@@ -67,6 +68,7 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
 
     private ENTITY createEntity(DTO dto) {
         ENTITY entity = this.toEntity(dto);
+        this.generateId(entity);
         this.getJpaRepository().save(entity);
 
         Set<Integer> listGenreIds = this.getListGenreIds(dto);
