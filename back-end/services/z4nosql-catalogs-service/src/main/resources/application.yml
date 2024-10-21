@@ -2,24 +2,25 @@ spring:
   application:
     name: z4nosql-catalogs-service
 
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
   data:
     mongodb:
-      host: ${DB_HOST:localhost}
-      port: ${DB_PORT:27017}
-      database: ${DB_DATABASE:db_z4f_catalogs}
-      username: ${DB_USERNAME:yaksha}
-      password: ${DB_PASSWORD:bloodyroar}
-      authentication-database: admin # si es necesario autenticarte en una base de datos distinta
-#      uri: mongodb://${DB_USERNAME:your_mongodb_username}:${DB_PASSWORD:your_mongodb_password}@${DB_HOST:localhost}:${DB_PORT:27017}/${DB_DATABASE:db_z4f_catalogs}?authSource=admin
+      uri: mongodb://${DB_USERNAME:yaksha}:${DB_PASSWORD:bloodyroar}@${DB_HOST:localhost}:${DB_PORT:27017}/${DB_DATABASE:db_z4f_catalogs}?authSource=admin
 
-security:
-  oauth2:
-    resourceserver:
-      jwt:
-        issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+
+  kafka:
+    bootstrapServers: ${SERVER_KAFKA:localhost:9092}
 
 server:
-  port: ${PORT:7001}
+  port: ${PORT:7002}
 
 logging:
   level:
