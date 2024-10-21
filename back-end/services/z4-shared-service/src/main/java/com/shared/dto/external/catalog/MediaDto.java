@@ -2,6 +2,7 @@ package com.shared.dto.external.catalog;
 
 import com.shared.dto.external.master.GenreDto;
 import com.shared.dto.external.master.LanguageDto;
+import com.shared.dto.external.studio.StudioDto;
 import com.shared.enums.AudienceEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -26,6 +27,7 @@ public abstract class MediaDto {
     private String urlImage;
     private AudienceEnum audience;
     private Integer studioId;
+    private StudioDto studio;
     private Set<GenreDto> listGenres = new HashSet<>();
     private Set<LanguageDto> listLanguages = new HashSet<>();
 

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class SerieLanguageId {
 
     @Column(name = "serie_id")
-    private Integer serieId;
+    private UUID serieId;
     @Column(name = "language_id")
     private Integer languageId;
     @Enumerated(EnumType.STRING)

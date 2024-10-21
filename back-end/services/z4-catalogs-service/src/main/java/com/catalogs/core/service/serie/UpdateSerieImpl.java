@@ -9,6 +9,7 @@ import com.catalogs.core.entity.mapper.SerieMapper;
 import com.catalogs.core.repository.SerieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
 import com.catalogs.utils.MediaGenericUpdateService;
 import com.shared.dto.external.catalog.SerieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -19,20 +20,22 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
 @Service("updateSerieImpl")
-public class UpdateSerieImpl extends MediaGenericUpdateService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, Integer> {
+public class UpdateSerieImpl extends MediaGenericUpdateService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, UUID> {
 
     private final SerieRepository serieRepository;
     private final SerieMapper serieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
 
     @Override
-    public JpaRepository<SerieEntity, Integer> getJpaRepository() {
+    public JpaRepository<SerieEntity, UUID> getJpaRepository() {
         return this.serieRepository;
     }
 
@@ -47,6 +50,11 @@ public class UpdateSerieImpl extends MediaGenericUpdateService<SerieGenreEntity,
     }
 
     @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
+    }
+
+    @Override
     public SerieDto toDto(SerieEntity entity) {
         return this.serieMapper.toDto(entity);
     }
@@ -57,8 +65,8 @@ public class UpdateSerieImpl extends MediaGenericUpdateService<SerieGenreEntity,
     }
 
     @Override
-    public SerieEntity findEntityById(Integer id) {
-        return this.serieRepository.findById(id)
+    public SerieEntity findEntityById(UUID serieId) {
+        return this.serieRepository.findById(serieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.SERIE.getValue()));
     }
 

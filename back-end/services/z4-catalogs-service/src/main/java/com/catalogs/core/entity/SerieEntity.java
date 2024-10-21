@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,9 +18,8 @@ import java.util.Set;
 public class SerieEntity extends MediaEntity<SerieGenreEntity, SerieLanguageEntity> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "serie_id")
-    private Integer serieId;
+    private UUID serieId;
     @OneToMany(mappedBy = "serie", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private Set<SerieGenreEntity> listGenres = new HashSet<>();
     @OneToMany(mappedBy = "serie", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
@@ -44,23 +44,5 @@ public class SerieEntity extends MediaEntity<SerieGenreEntity, SerieLanguageEnti
     public void setListLanguagesCustom(Set<SerieLanguageEntity> listLanguages) {
         this.listLanguages = listLanguages;
     }
-
-//    public void setGenres(Set<SerieGenreEntity> listGenres) {
-//        if (this.listGenres == null) {
-//            this.listGenres = listGenres;
-//        } else {
-//            this.listGenres.retainAll(listGenres);
-//            this.listGenres.addAll(listGenres);
-//        }
-//    }
-//
-//    public void setLanguages(Set<SerieLanguageEntity> listLanguages) {
-//        if (this.listLanguages == null) {
-//            this.listLanguages = listLanguages;
-//        } else {
-//            this.listLanguages.retainAll(listLanguages);
-//            this.listLanguages.addAll(listLanguages);
-//        }
-//    }
 
 }

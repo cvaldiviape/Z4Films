@@ -15,11 +15,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service("findAllSerieImpl")
-public class FindAllSerieImpl extends MediaGenericFindAllService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, Integer> {
+public class FindAllSerieImpl extends MediaGenericFindAllService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, UUID> {
 
     private final SerieRepository serieRepository;
     private final SerieMapper serieMapper;
@@ -27,7 +28,7 @@ public class FindAllSerieImpl extends MediaGenericFindAllService<SerieGenreEntit
     private final LanguageClient languageClient;
 
     @Override
-    public JpaRepository<SerieEntity, Integer> getJpaRepository() {
+    public JpaRepository<SerieEntity, UUID> getJpaRepository() {
         return this.serieRepository;
     }
 

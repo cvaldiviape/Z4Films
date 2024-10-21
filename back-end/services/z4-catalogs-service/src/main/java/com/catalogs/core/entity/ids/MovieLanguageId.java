@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class MovieLanguageId {
 
     @Column(name = "movie_id")
-    private Integer movieId;
+    private UUID movieId;
     @Column(name = "language_id")
     private Integer languageId;
     @Enumerated(EnumType.STRING)

@@ -2,11 +2,13 @@ package com.catalogs.utils;
 
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
 import com.shared.core.service.CreateService;
 import com.shared.dto.custom.MediaEntity;
 import com.shared.dto.external.catalog.MediaDto;
 import com.shared.dto.external.master.GenreDto;
 import com.shared.dto.external.master.LanguageDto;
+import com.shared.dto.external.studio.StudioDto;
 import com.shared.enums.ValueEnum;
 import com.shared.utils.FeignUtil;
 import com.shared.utils.filter.FilterUtil;
@@ -28,8 +30,11 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
     public abstract JpaRepository<ENTITY, ID> getJpaRepository();
     public abstract GenreClient getGenreClient();
     public abstract LanguageClient getLanguageClient();
+    public abstract StudioClient getStudioClient();
     public abstract DTO toDto(ENTITY entity);
     public abstract ENTITY toEntity(DTO dto);
+    public abstract void generateId(ENTITY entity);
+    public abstract void sendEventToKafka(DTO dtoCustom);
     public abstract Set<GENRE_ENTITY> buildListGenresEntities(Set<Integer> listGenreIds, ENTITY entity);
     public abstract Set<LANGUAGE_ENTITY> buildListLanguagesEntities(Set<LanguageDto> listLanguages, ENTITY entity);
 
@@ -37,7 +42,9 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
     public DTO create(DTO dto) {
         this.validateRelationships(dto);
         ENTITY entityCreated = this.createEntity(dto);
-        return this.toDtoCustom(dto, entityCreated);
+        DTO dtoCustom = this.toDtoCustom(dto, entityCreated);
+        this.sendEventToKafka(dtoCustom);
+        return dtoCustom;
     }
 
     private void validateRelationships(DTO dto) {
@@ -54,6 +61,7 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
         DTO dtoCreated = this.toDto(entityCreated);
         this.setDataListGenres(dto, dtoCreated);
         this.setDataListLanguages(dto, dtoCreated);
+        this.setDataStudio(dtoCreated);
         return dtoCreated;
     }
 
@@ -67,6 +75,7 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
 
     private ENTITY createEntity(DTO dto) {
         ENTITY entity = this.toEntity(dto);
+        this.generateId(entity);
         this.getJpaRepository().save(entity);
 
         Set<Integer> listGenreIds = this.getListGenreIds(dto);
@@ -124,6 +133,12 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
     private void setComplementaryDataLanguage(LanguageDto languageDto, DTO dto) {
         LanguageDto languageFound = FilterUtil.find(new ArrayList<>(dto.getListLanguages()), languageDto.getLanguageId(), ValueEnum.LANGUAGE.getValue());
         languageDto.setAudioFormat(languageFound.getAudioFormat());
+    }
+
+    public void setDataStudio(DTO dtoCreated) {
+        ResponseDto response = this.getStudioClient().findById(dtoCreated.getStudioId());
+        StudioDto studio = FeignUtil.extracstData(response, StudioDto.class, ValueEnum.STUDIO.getValue());
+        dtoCreated.setStudio(studio);
     }
 
 }

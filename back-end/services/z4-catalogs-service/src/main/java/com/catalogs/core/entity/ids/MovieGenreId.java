@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class MovieGenreId {
 
     @Column(name = "movie_id")
-    private Integer movieId;
+    private UUID movieId;
     @Column(name = "genre_id")
     private Integer genreId;
 

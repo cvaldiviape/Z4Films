@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +18,6 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true) // Incluye la lógica de la clase padre
 public class SerieDto extends MediaDto {
 
-    private Integer serieId;
+    private UUID serieId;
 
 }

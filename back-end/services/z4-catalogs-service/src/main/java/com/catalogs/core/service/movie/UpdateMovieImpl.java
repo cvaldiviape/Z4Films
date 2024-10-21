@@ -9,6 +9,7 @@ import com.catalogs.core.entity.mapper.MovieMapper;
 import com.catalogs.core.repository.MovieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
 import com.catalogs.utils.MediaGenericUpdateService;
 import com.shared.dto.external.catalog.MovieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -19,20 +20,22 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
 @Service("updateMovieImpl")
-public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, Integer> {
+public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity, MovieLanguageEntity, MovieEntity, MovieDto, UUID> {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
 
     @Override
-    public JpaRepository<MovieEntity, Integer> getJpaRepository() {
+    public JpaRepository<MovieEntity, UUID> getJpaRepository() {
         return this.movieRepository;
     }
 
@@ -47,6 +50,11 @@ public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity,
     }
 
     @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
+    }
+
+    @Override
     public MovieDto toDto(MovieEntity entity) {
         return this.movieMapper.toDto(entity);
     }
@@ -57,8 +65,8 @@ public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity,
     }
 
     @Override
-    public MovieEntity findEntityById(Integer id) {
-        return this.movieRepository.findById(id)
+    public MovieEntity findEntityById(UUID movieId) {
+        return this.movieRepository.findById(movieId)
                 .orElseThrow(() -> ValidateUtil.throwNotFoundException(ValueEnum.MOVIE.getValue()));
     }
 

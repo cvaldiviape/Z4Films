@@ -9,6 +9,8 @@ import com.catalogs.core.entity.mapper.SerieMapper;
 import com.catalogs.core.repository.SerieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
+import com.catalogs.kafka.publisher.SeriePublisher;
 import com.catalogs.utils.MediaGenericCreateService;
 import com.shared.dto.external.catalog.SerieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -17,20 +19,23 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Transactional
 @AllArgsConstructor
 @Service("createSerieImpl")
-public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, Integer> {
+public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity, SerieLanguageEntity, SerieEntity, SerieDto, UUID> {
 
     private final SerieRepository serieRepository;
     private final SerieMapper serieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
+    private final SeriePublisher serieProducer;
 
     @Override
-    public JpaRepository<SerieEntity, Integer> getJpaRepository() {
+    public JpaRepository<SerieEntity, UUID> getJpaRepository() {
         return this.serieRepository;
     }
 
@@ -45,6 +50,16 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     }
 
     @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
+    }
+
+    @Override
+    public void sendEventToKafka(SerieDto dtoCustom) {
+        this.serieProducer.send(dtoCustom);
+    }
+
+    @Override
     public SerieDto toDto(SerieEntity entity) {
        return this.serieMapper.toDto(entity);
     }
@@ -52,6 +67,12 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     @Override
     public SerieEntity toEntity(SerieDto dto) {
         return this.serieMapper.toEntity(dto);
+    }
+
+    @Override
+    public void generateId(SerieEntity entity) {
+        UUID uuid = UUID.randomUUID();
+        entity.setSerieId(uuid);
     }
 
     @Override
