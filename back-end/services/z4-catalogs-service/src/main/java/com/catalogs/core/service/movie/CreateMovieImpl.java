@@ -7,6 +7,8 @@ import com.catalogs.core.entity.mapper.MovieMapper;
 import com.catalogs.core.repository.MovieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
+import com.catalogs.kafka.publisher.MoviePublisher;
 import com.catalogs.utils.MediaGenericCreateService;
 import com.shared.dto.external.catalog.MovieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -27,6 +29,8 @@ public class CreateMovieImpl extends MediaGenericCreateService<MovieGenreEntity,
     private final MovieMapper movieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
+    private final MoviePublisher movieProducer;
 
     @Override
     public JpaRepository<MovieEntity, UUID> getJpaRepository() {
@@ -44,6 +48,11 @@ public class CreateMovieImpl extends MediaGenericCreateService<MovieGenreEntity,
     }
 
     @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
+    }
+
+    @Override
     public MovieDto toDto(MovieEntity entity) {
         return this.movieMapper.toDto(entity);
     }
@@ -57,6 +66,11 @@ public class CreateMovieImpl extends MediaGenericCreateService<MovieGenreEntity,
     public void generateId(MovieEntity entity) {
         UUID uuid = UUID.randomUUID();
         entity.setMovieId(uuid);
+    }
+
+    @Override
+    public void sendEventToKafka(MovieDto dtoCustom) {
+        this.movieProducer.send(dtoCustom);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.catalogs.core.entity.mapper.MovieMapper;
 import com.catalogs.core.repository.MovieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
 import com.catalogs.utils.MediaGenericUpdateService;
 import com.shared.dto.external.catalog.MovieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -31,6 +32,7 @@ public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity,
     private final MovieMapper movieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
 
     @Override
     public JpaRepository<MovieEntity, UUID> getJpaRepository() {
@@ -45,6 +47,11 @@ public class UpdateMovieImpl extends MediaGenericUpdateService<MovieGenreEntity,
     @Override
     public LanguageClient getLanguageClient() {
         return this.languageClient;
+    }
+
+    @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
     }
 
     @Override

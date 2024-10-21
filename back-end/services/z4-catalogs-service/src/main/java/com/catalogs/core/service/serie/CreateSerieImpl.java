@@ -9,6 +9,8 @@ import com.catalogs.core.entity.mapper.SerieMapper;
 import com.catalogs.core.repository.SerieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
+import com.catalogs.kafka.publisher.SeriePublisher;
 import com.catalogs.utils.MediaGenericCreateService;
 import com.shared.dto.external.catalog.SerieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -29,6 +31,8 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     private final SerieMapper serieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
+    private final SeriePublisher serieProducer;
 
     @Override
     public JpaRepository<SerieEntity, UUID> getJpaRepository() {
@@ -43,6 +47,16 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     @Override
     public LanguageClient getLanguageClient() {
         return this.languageClient;
+    }
+
+    @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
+    }
+
+    @Override
+    public void sendEventToKafka(SerieDto dtoCustom) {
+        this.serieProducer.send(dtoCustom);
     }
 
     @Override

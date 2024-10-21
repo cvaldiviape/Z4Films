@@ -9,6 +9,7 @@ import com.catalogs.core.entity.mapper.SerieMapper;
 import com.catalogs.core.repository.SerieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
+import com.catalogs.external.client.StudioClient;
 import com.catalogs.utils.MediaGenericUpdateService;
 import com.shared.dto.external.catalog.SerieDto;
 import com.shared.dto.external.master.LanguageDto;
@@ -31,6 +32,7 @@ public class UpdateSerieImpl extends MediaGenericUpdateService<SerieGenreEntity,
     private final SerieMapper serieMapper;
     private final GenreClient genreClient;
     private final LanguageClient languageClient;
+    private final StudioClient studioClient;
 
     @Override
     public JpaRepository<SerieEntity, UUID> getJpaRepository() {
@@ -45,6 +47,11 @@ public class UpdateSerieImpl extends MediaGenericUpdateService<SerieGenreEntity,
     @Override
     public LanguageClient getLanguageClient() {
         return this.languageClient;
+    }
+
+    @Override
+    public StudioClient getStudioClient() {
+        return this.studioClient;
     }
 
     @Override
