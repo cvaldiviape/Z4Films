@@ -1,12 +1,10 @@
 package com.catalogs.utils;
 
-import com.catalogs.core.entity.SerieEntity;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
 import com.shared.core.service.FindAllService;
 import com.shared.dto.custom.MediaEntity;
 import com.shared.dto.external.catalog.MediaDto;
-import com.shared.dto.external.catalog.SerieDto;
 import com.shared.dto.external.master.GenreDto;
 import com.shared.dto.external.master.LanguageDto;
 import com.shared.enums.ValueEnum;
@@ -14,7 +12,6 @@ import com.shared.utils.FeignUtil;
 import com.shared.utils.filter.FilterUtil;
 import com.shared.utils.response.ResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

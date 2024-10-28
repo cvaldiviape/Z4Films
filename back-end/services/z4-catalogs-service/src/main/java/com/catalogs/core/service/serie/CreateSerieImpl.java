@@ -55,8 +55,8 @@ public class CreateSerieImpl extends MediaGenericCreateService<SerieGenreEntity,
     }
 
     @Override
-    public void sendEventToKafka(SerieDto dtoCustom) {
-        this.serieProducer.send(dtoCustom);
+    public void sendEventToKafka(SerieDto payload) {
+        this.serieProducer.send(payload);
     }
 
     @Override

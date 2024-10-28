@@ -16,22 +16,22 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping
-    public Flowable<MovieEntity> getAllMovies() {
+    public Flowable<MovieEntity> getAll() {
         return movieService.getAllMovies();
     }
 
     @GetMapping("/{id}")
-    public Maybe<MovieEntity> getMovieById(@PathVariable String id) {
+    public Maybe<MovieEntity> getById(@PathVariable String id) {
         return movieService.getMovieById(id);
     }
 
     @PostMapping
-    public Single<MovieEntity> createMovie(@RequestBody MovieEntity movie) {
+    public Single<MovieEntity> create(@RequestBody MovieEntity movie) {
         return movieService.createMovie(movie);
     }
 
     @DeleteMapping("/{id}")
-    public Maybe<Void> deleteMovieById(@PathVariable String id) {
+    public Maybe<Void> delete(@PathVariable String id) {
         return movieService.deleteMovieById(id);
     }
 

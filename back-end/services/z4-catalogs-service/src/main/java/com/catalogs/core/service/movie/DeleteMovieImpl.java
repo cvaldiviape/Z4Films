@@ -3,7 +3,6 @@ package com.catalogs.core.service.movie;
 import com.catalogs.core.entity.MovieEntity;
 import com.catalogs.core.entity.mapper.MovieMapper;
 import com.catalogs.core.repository.MovieRepository;
-import com.shared.core.service.DeleteService;
 import com.shared.core.service.impl.GenericDeleteService;
 import com.shared.dto.external.catalog.MovieDto;
 import com.shared.enums.ValueEnum;

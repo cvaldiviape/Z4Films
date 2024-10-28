@@ -1,9 +1,9 @@
 package com.catalogs.kafka.publisher;
 
+import com.shared.constants.TopicConstans;
 import com.shared.dto.external.catalog.MovieDto;
 import com.shared.dto.kafka.dto.KafkaDto;
 import com.shared.dto.kafka.enums.ActionTypeEnum;
-import com.shared.dto.kafka.enums.TopicEnum;
 import lombok.AllArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class MoviePublisher {
                 .data(data)
                 .build();
 
-        this.kafkaTemplate.send(TopicEnum.MOVIE.getName(), id, payload);
+        this.kafkaTemplate.send(TopicConstans.MOVIE, 0, id, payload);
     }
 
 }

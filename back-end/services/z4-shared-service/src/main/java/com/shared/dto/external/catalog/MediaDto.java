@@ -4,7 +4,6 @@ import com.shared.dto.external.master.GenreDto;
 import com.shared.dto.external.master.LanguageDto;
 import com.shared.dto.external.studio.StudioDto;
 import com.shared.enums.AudienceEnum;
-import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.shared.utils.response.ResponseDto;
 import java.util.List;
-import java.util.Objects;
 
 public class ObjectMapperUtil {
 

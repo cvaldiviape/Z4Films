@@ -8,19 +8,13 @@ import com.catalogs.core.repository.SerieRepository;
 import com.catalogs.external.client.GenreClient;
 import com.catalogs.external.client.LanguageClient;
 import com.catalogs.utils.MediaGenericFindByIdService;
-import com.shared.core.service.FindByIdService;
 import com.shared.dto.external.catalog.SerieDto;
-import com.shared.dto.external.master.GenreDto;
 import com.shared.dto.external.master.LanguageDto;
 import com.shared.enums.ValueEnum;
-import com.shared.utils.FeignUtil;
 import com.shared.utils.ValidateUtil;
-import com.shared.utils.response.ResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -63,7 +57,7 @@ public class FindByIsSerieImpl extends MediaGenericFindByIdService<SerieGenreEnt
     @Override
     public void setComplementaryDataLanguage(SerieEntity entity, LanguageDto languageDto) {
         SerieLanguageEntity languageFound = this.findLanguage(entity, languageDto);
-//        languageDto.setAudioFormat(languageFound.getId().getAudioFormat());
+        languageDto.setAudioFormat(languageFound.getId().getAudioFormat());
     }
 
     private SerieLanguageEntity findLanguage(SerieEntity entity, LanguageDto languageDto) {

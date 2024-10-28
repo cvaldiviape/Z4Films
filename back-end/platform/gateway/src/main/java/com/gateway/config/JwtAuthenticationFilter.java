@@ -1,20 +1,11 @@
 package com.gateway.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-import reactor.util.context.Context;
 
 // "WebFilter" en Spring Framework es parte del módulo Spring WebFlux y se utiliza para implementar filtros que se aplican a las solicitudes
 // y respuestas HTTP en una aplicación web reactiva. Proporciona una forma de interceptar y modificar las solicitudes y respuestas antes de

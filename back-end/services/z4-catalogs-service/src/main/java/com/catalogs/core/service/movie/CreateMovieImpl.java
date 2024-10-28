@@ -69,8 +69,8 @@ public class CreateMovieImpl extends MediaGenericCreateService<MovieGenreEntity,
     }
 
     @Override
-    public void sendEventToKafka(MovieDto dtoCustom) {
-        this.movieProducer.send(dtoCustom);
+    public void sendEventToKafka(MovieDto payload) {
+        this.movieProducer.send(payload);
     }
 
     @Override

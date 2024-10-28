@@ -42,9 +42,9 @@ public abstract class MediaGenericCreateService<GENRE_ENTITY, LANGUAGE_ENTITY,
     public DTO create(DTO dto) {
         this.validateRelationships(dto);
         ENTITY entityCreated = this.createEntity(dto);
-        DTO dtoCustom = this.toDtoCustom(dto, entityCreated);
-        this.sendEventToKafka(dtoCustom);
-        return dtoCustom;
+        DTO payload = this.toDtoCustom(dto, entityCreated);
+        this.sendEventToKafka(payload);
+        return payload;
     }
 
     private void validateRelationships(DTO dto) {
