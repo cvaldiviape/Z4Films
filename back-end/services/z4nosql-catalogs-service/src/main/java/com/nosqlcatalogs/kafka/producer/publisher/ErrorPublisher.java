@@ -16,7 +16,6 @@ public class ErrorPublisher {
     private final KafkaTemplate<String, KafkaDto<ErrorDetailsDto>> kafkaTemplate;
 
     public void sendError(String payload, Throwable throwable) {
-        // Aquí puedes construir un mensaje más detallado
         ErrorDetailsDto errorDetails = ErrorDetailsDto.builder()
                 .errorMessage(throwable.getMessage())
                 .stackTrace(Arrays.toString(throwable.getStackTrace())) // O algún otro formato de stack trace

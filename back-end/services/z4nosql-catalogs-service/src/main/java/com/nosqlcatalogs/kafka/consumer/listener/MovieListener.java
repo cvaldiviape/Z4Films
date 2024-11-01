@@ -36,6 +36,7 @@ public class MovieListener {
             this.handlerRetry(payload, context);
             return null;
         });
+
     }
 
     private void executeProccess(String payload, Acknowledgment acknowledgment) {
@@ -74,11 +75,16 @@ public class MovieListener {
 
     private void handlerRetry(String payload, RetryContext context) {
         // Si se han agotado los intentos, envía el mensaje al topic de error
-        int maxAttempts = 3; // Asegúrate de que este valor coincide con el configurado en RetryTemplate
-        int retryCount = context.getRetryCount();
-        if (retryCount >= maxAttempts - 1) {
+        int maxAttempts = 3;
+        if (this.hasExceededRetryLimit(maxAttempts, context)) {
             this.errorPublisher.sendError(payload, context.getLastThrowable());
         }
+    }
+
+    private boolean hasExceededRetryLimit(int maxAttempts, RetryContext context) {
+       // Asegúrate de que este valor coincide con el configurado en RetryTemplate
+        int retryCount = context.getRetryCount();
+        return retryCount >= maxAttempts - 1;
     }
 
     // El groupId es clave para:
