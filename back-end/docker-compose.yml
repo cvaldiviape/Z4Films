@@ -105,6 +105,24 @@ services:
       - "8081:8081"
     networks:
       - broker-kafka
+  
+  # --------------- platform -------------- #
+  eureka-server:
+    container_name: z4-pt-eureka
+    image: z4-pt-eureka:v1
+    restart: always
+    ports:
+      - "8761:8761"
+    networks:
+      - broker-kafka
+  
+  keycloak:
+    container_name: z4-pt-keycloak
+    image: cvaldiviape/z4movies-keycloak:latest
+    ports:
+      - "9090:8080"
+    networks:
+      - broker-kafka
 
 volumes:
   postgres_data:
