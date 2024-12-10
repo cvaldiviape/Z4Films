@@ -1,6 +1,6 @@
 spring:
   application:
-    name: z4nosql-catalogs-service
+    name: ${NAME:z4nosql-catalogs-service}
 
   autoconfigure:
     exclude:
@@ -8,19 +8,23 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://${DB_USERNAME:yaksha}:${DB_PASSWORD:bloodyroar}@${DB_HOST:localhost}:${DB_PORT:27017}/${DB_DATABASE:db_z4f_catalogs}?authSource=admin
+      uri: mongodb://${DB_USERNAME:yaksha}:${DB_PASSWORD:bloodyroar}@${DB_HOST:localhost:27017}/${DB_DATABASE:db_z4f_catalogs}?authSource=admin
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+          issuerUri: ${ISSUER_URI:http://localhost:8080/realms/z4movies-dev}
 
   kafka:
-    bootstrapServers: ${SERVER_KAFKA:localhost:9092}
+    bootstrapServers: ${KAFKA_URL:localhost:9092}
+    admin:
+      properties:
+        replication:
+          factor: 1
 
 server:
-  port: ${PORT:7002}
+  port: ${PORT:7001}
 
 logging:
   level:
@@ -31,7 +35,7 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
 
 openapi:
   service:
@@ -43,5 +47,13 @@ springdoc:
   api-docs:
     path: /z4nosql-catalogs-service/v3/api-docs
   swagger-ui:
-    path: /z4nosql-catalogs-service/swagger-ui/index.html
     operationsSorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
