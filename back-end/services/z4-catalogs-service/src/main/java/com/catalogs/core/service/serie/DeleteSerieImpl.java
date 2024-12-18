@@ -3,7 +3,6 @@ package com.catalogs.core.service.serie;
 import com.catalogs.core.entity.SerieEntity;
 import com.catalogs.core.entity.mapper.SerieMapper;
 import com.catalogs.core.repository.SerieRepository;
-import com.shared.core.service.DeleteService;
 import com.shared.core.service.impl.GenericDeleteService;
 import com.shared.dto.external.catalog.SerieDto;
 import com.shared.enums.ValueEnum;

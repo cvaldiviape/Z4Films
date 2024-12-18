@@ -4,7 +4,6 @@ import com.shared.dto.custom.CommonEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import java.util.HashSet;
 
 @Data
 @NoArgsConstructor

@@ -3,7 +3,6 @@ package com.master.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,7 +24,7 @@ public class SecurityConfiguration {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/z4-master-data-service/v3/api-docs/**", "/z4-master-data-service/swagger-ui/**")
+                        .requestMatchers("/actuator/health", "/z4-master-data-service/v3/api-docs/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
@@ -35,7 +34,7 @@ public class SecurityConfiguration {
     }
 
     // Configurando el decodificador de tokens JWT para que valide tokens JWT emitidos por el servidor de autorización (Keycloak en este caso) que tiene la
-    // ubicación especificada como emisor (issuer). En este caso, la URL del emisor es "http://localhost:9090/realms/z4movies-dev".
+    // ubicación especificada como emisor (issuer). En este caso, la URL del emisor es "http://localhost:8080/realms/z4movies-dev".
     @Bean
     public JwtDecoder jwtDecoder() {
         return JwtDecoders.fromIssuerLocation(this.issuerUri);

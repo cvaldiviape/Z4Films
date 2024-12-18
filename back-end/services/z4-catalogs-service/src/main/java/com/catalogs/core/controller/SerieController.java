@@ -8,7 +8,6 @@ import com.catalogs.utils.MediaGenericCreateService;
 import com.catalogs.utils.MediaGenericFindAllService;
 import com.catalogs.utils.MediaGenericFindByIdService;
 import com.catalogs.utils.MediaGenericUpdateService;
-import com.shared.core.service.*;
 import com.shared.core.service.impl.GenericDeleteService;
 import com.shared.dto.external.catalog.SerieDto;
 import org.springframework.beans.factory.annotation.Qualifier;

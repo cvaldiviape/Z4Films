@@ -1,6 +1,6 @@
 server:
-  port:
-    8090
+  port: ${PORT:8090}
+
 spring:
   application:
     name: api-gateway
@@ -8,19 +8,19 @@ spring:
     gateway:
       routes: # filters: # los "filters" permiten manipulación de solicitudes y respuestas HTTP que pasan a través del gateway.
         - id: z4-master-data-service
-          uri: lb://z4-master-data-service
+          uri: lb://${MASTER_DATA_SERVICE:z4-master-data-service}
           predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
             - Path=/z4-master-data-service/v3/api-docs, /api/countries/**, /api/genres/**, /api/languages/**
         - id: z4-catalogs-service
-          uri: lb://z4-catalogs-service
+          uri: lb://${CATALOGS_SERVICE:z4-catalogs-service}
           predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
             - Path=/z4-catalogs-service/v3/api-docs, /api/movies/**, /api/series/**
         - id: z4-studios-service
-          uri: lb://z4-studios-service
+          uri: lb://${STUDIOS_SERVICE:z4-studios-service}
           predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
             - Path=/z4-studios-service/v3/api-docs, /api/studios/**
         - id: z4nosql-catalogs-service
-          uri: lb://z4nosql-catalogs-service
+          uri: lb://${NOSQL_CATALOGS_SERVICE:z4nosql-catalogs-service}
           predicates: # los "predicates" son el conjunto de criterios que deben coincidir para que las solicitudes se envien a este microservicio
             - Path=/z4nosql-catalogs-service/v3/api-docs, /api/nosql/movies/**, /api/nosql/series/**
     loadbalancer: # deshabilitar el balanceador de carga "Ribbon" de "Spring Cloud Netflix", debido a que usaremos el moderno llamado "Spring Cloud Balancer".
@@ -30,14 +30,13 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
-          jwt-set:-uri: ${JWT_SET_URI:http://localhost:9090/realms/z4movies-dev/protocol/openid-connect/certs}
+          issuer-uri: ${ISSUER_URI:http://localhost:8080/realms/z4movies-dev}
+          jwt-set:-uri: ${JWT_SET_URI:http://localhost:8080/realms/z4movies-dev/protocol/openid-connect/certs}
 
 eureka: # indicando UBICACION FISICA del servidor eureka.
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
-
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
 
 springdoc:
   swagger-ui:
@@ -60,3 +59,12 @@ springdoc:
       - url: /z4nosql-catalogs-service/v3/api-docs
         name: NoSQL Catalogs Service
         primaryName: NoSQL Catalogs Service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

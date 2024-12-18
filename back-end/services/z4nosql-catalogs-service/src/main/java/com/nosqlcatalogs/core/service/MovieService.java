@@ -1,7 +1,7 @@
 package com.nosqlcatalogs.core.service;
 
 import com.nosqlcatalogs.core.entity.MovieEntity;
-import com.nosqlcatalogs.core.repository.MovieRepository;
+import com.nosqlcatalogs.core.repository.MovieReactiveRepository;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Single;
@@ -14,25 +14,25 @@ import reactor.core.publisher.Mono;
 public class MovieService {
 
     @Autowired
-    private MovieRepository movieRepository;
+    private MovieReactiveRepository movieReactiveRepository;
 
     public Flowable<MovieEntity> getAllMovies() {
-        Flux<MovieEntity> monoMovie = this.movieRepository.findAll();
+        Flux<MovieEntity> monoMovie = this.movieReactiveRepository.findAll();
         return Flowable.fromPublisher(monoMovie);
     }
 
     public Maybe<MovieEntity> getMovieById(String id) {
-        Mono<MovieEntity> monoMovie = this.movieRepository.findById(id);
+        Mono<MovieEntity> monoMovie = this.movieReactiveRepository.findById(id);
         return Maybe.fromPublisher(monoMovie);
     }
 
     public Single<MovieEntity> createMovie(MovieEntity movie) {
-        Mono<MovieEntity> monoMovie = this.movieRepository.save(movie);
+        Mono<MovieEntity> monoMovie = this.movieReactiveRepository.save(movie);
         return Single.fromPublisher(monoMovie);
     }
 
     public Maybe<Void> deleteMovieById(String id) {
-        Mono<Void> monoMovie = this.movieRepository.deleteById(id);
+        Mono<Void> monoMovie = this.movieReactiveRepository.deleteById(id);
         return Maybe.fromPublisher(monoMovie);
     }
 

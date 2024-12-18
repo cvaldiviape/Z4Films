@@ -1,6 +1,6 @@
 spring:
   application:
-    name: z4-master-data-service
+    name: ${NAME:z4-master-data-service}
 
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost:5432}/${DB_DATABASE:db_z4f_master_data}
@@ -25,10 +25,10 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuerUri: ${ISSUER_URI:http://localhost:9090/realms/z4movies-dev}
+          issuerUri: ${ISSUER_URI:http://localhost:8080/realms/z4movies-dev}
 
 server:
-  port: ${PORT:8001}
+  port: ${PORT:8002}
 
 logging:
   level:
@@ -39,7 +39,7 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
 
 openapi:
   service:
@@ -51,5 +51,13 @@ springdoc:
   api-docs:
     path: /z4-master-data-service/v3/api-docs
   swagger-ui:
-    path: /z4-master-data-service/swagger-ui/index.html
     operationsSorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

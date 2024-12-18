@@ -24,33 +24,25 @@ public class KafkaProducerConfig {
     public Map<String, Object> producerConfig() {
         Map<String, Object> properties = new HashMap<>();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer); // indicando la ubicacion de Kafka con la cual se trabajara
-        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class); // se va serializar con
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return properties;
     }
 
-    @Bean
-    public ProducerFactory<String, KafkaDto<MovieDto>> movieProducerFactory() { // creando un "provider"
-        return new DefaultKafkaProducerFactory<>(this.producerConfig());
-    }
-
-    // simplifica la producción de mensajes hacia Kafka, es decir ya vinene con: configuración del productor, serialización de datos, gestión de transacciones (si se habilita),
-    // y proporcionando métodos convenientes para enviar mensajes de manera síncrona o asíncrona.
-    @Bean
-    public KafkaTemplate<String, KafkaDto<MovieDto>> movieKafkaTemplate(ProducerFactory<String, KafkaDto<MovieDto>> movieProducerFactory) {
-        return new KafkaTemplate<>(movieProducerFactory);
+    private <T> KafkaTemplate<String, KafkaDto<T>> createKafkaTemplate(Class<T> dtoClass) {
+        Map<String, Object> configs = this.producerConfig();
+        ProducerFactory<String, KafkaDto<T>> producerFactory = new DefaultKafkaProducerFactory<>(configs);
+        return new KafkaTemplate<>(producerFactory);
     }
 
     @Bean
-    public ProducerFactory<String, KafkaDto<SerieDto>> serieProducerFactory() { // creando un "provider"
-        return new DefaultKafkaProducerFactory<>(this.producerConfig());
+    public KafkaTemplate<String, KafkaDto<MovieDto>> movieKafkaTemplate() {
+        return this.createKafkaTemplate(MovieDto.class);
     }
 
-    // simplifica la producción de mensajes hacia Kafka, es decir ya vinene con: configuración del productor, serialización de datos, gestión de transacciones (si se habilita),
-    // y proporcionando métodos convenientes para enviar mensajes de manera síncrona o asíncrona.
     @Bean
-    public KafkaTemplate<String, KafkaDto<SerieDto>> serieKafkaTemplate(ProducerFactory<String, KafkaDto<SerieDto>> serieProducerFactory) {
-        return new KafkaTemplate<>(serieProducerFactory);
+    public KafkaTemplate<String, KafkaDto<SerieDto>> serieKafkaTemplate() {
+        return this.createKafkaTemplate(SerieDto.class);
     }
 
 }

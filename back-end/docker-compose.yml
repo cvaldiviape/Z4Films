@@ -1,0 +1,311 @@
+services:
+  # ----------------- kafka ----------------- #
+  zookeeper:
+    container_name: z4-kf-zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    networks:
+      - broker-kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka: # es un broker (para que se considere un cluster de kafka, se debe definir al menos 2 brokers)
+    container_name: z4-kf-kafka
+    image: confluentinc/cp-kafka:latest
+    networks:
+      - broker-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kafdrop:
+    container_name: z4-kf-kafdrop
+    image: obsidiandynamics/kafdrop:latest
+    networks:
+      - broker-kafka
+    depends_on:
+      - kafka
+    ports:
+      - "19000:9000"
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
+      TZ: America/Lima 
+
+  # --------------- databases -------------- #
+  postgres-server:
+    container_name: z4-db-postgres-server
+    image: postgres:15
+    restart: always
+    depends_on:
+      - kafdrop
+    ports:
+      - "5532:5432"
+    environment:
+      - POSTGRES_DB=root
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init/postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql:ro
+    networks:
+      - broker-kafka
+  
+  postgres-client:
+    container_name: z4-db-postgres-client
+    image: dpage/pgadmin4:latest
+    restart: always
+    depends_on:
+      - postgres-server
+    ports:
+      - "84:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=secret
+    networks:
+      - broker-kafka
+  
+  mongo-server:
+    container_name: z4-db-mongo-server
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    depends_on:
+      - postgres-client
+    ports:
+      - "29017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    networks:
+      - broker-kafka
+
+  mongo-client:
+    container_name: z4-db-mongo-client
+    image: mongo-express:latest
+    restart: always
+    depends_on:
+      - mongo-server
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
+      - ME_CONFIG_BASICAUTH_USERNAME=melek
+      - ME_CONFIG_BASICAUTH_PASSWORD=bloodyroar
+      - ME_CONFIG_MONGODB_SERVER=mongo-server
+    ports:
+      - "8081:8081"
+    networks:
+      - broker-kafka
+  
+  # --------------- platform -------------- #
+  keycloak:
+    container_name: z4-pt-keycloak
+    image: cvaldiviape/z4movies-keycloak:latest
+    environment:
+    - KC_HOSTNAME=z4-pt-keycloak:8080
+    - KC_HOSTNAME_STRICT=true
+    - KC_HOSTNAME_STRICT_HTTPS=false
+    - KC_PROXY=edge
+    ports:
+      - "8080:8080"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  eureka-server:
+    container_name: z4-pt-eureka
+    image: z4-pt-eureka:v1
+    restart: always
+    depends_on:
+      - keycloak
+    environment:
+      - NAME=eureka-server
+      - PORT=8761
+    ports:
+      - "8761:8761"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  gateway:
+    container_name: z4-pt-gateway
+    image: z4-pt-gateway:v1
+    restart: always
+    depends_on:
+      - eureka-server
+      - keycloak
+      - catalogs-service
+      - master-data-service
+      - studios-service
+      - nosql-catalogs-service
+    environment:
+      - NAME=gateway
+      - PORT=8090
+      - EUREKA_URL=http://z4-pt-eureka:8761/eureka
+      - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
+      - JWT_SET_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev/protocol/openid-connect/certs
+      - CATALOGS_SERVICE=z4-catalogs-service
+      - MASTER_DATA_SERVICE=z4-master-data-service
+      - STUDIOS_SERVICE=z4-studios-service
+      - NOSQL_CATALOGS_SERVICE=z4nosql-catalogs-service
+    ports:
+      - "8090:8090"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # --------------- services -------------- #
+  catalogs-service:
+    container_name: z4-sv-catalogs-service
+    image: z4-sv-catalogs-service:v1
+    restart: always
+    depends_on:
+      - postgres-server
+      - eureka-server
+      - kafka
+    environment:
+      - NAME=z4-catalogs-service
+      - PORT=8001
+      - DB_HOST=z4-db-postgres-server:5432
+      - DB_DATABASE=db_catalogs
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - DDL_AUTO=none
+      - EUREKA_URL=http://z4-pt-eureka:8761/eureka
+      - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
+      - KAFKA_URL=kafka:29092
+      - GATEWAY_URL=http://z4-pt-gateway:8090
+    ports:
+      - "8001:8001"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    
+  master-data-service:
+    container_name: z4-sv-master-data-service
+    image: z4-sv-master-data-service:v1
+    restart: always
+    depends_on:
+      - postgres-server
+      - eureka-server
+      - kafka
+      - keycloak
+    environment:
+      - NAME=z4-master-data-service
+      - PORT=8002
+      - DB_HOST=z4-db-postgres-server:5432
+      - DB_DATABASE=db_master_data
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - DDL_AUTO=none
+      - EUREKA_URL=http://z4-pt-eureka:8761/eureka
+      - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
+    ports:
+      - "8002:8002"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  studios-service:
+    container_name: z4-sv-studios-service
+    image: z4-sv-studios-service:v1
+    restart: always
+    depends_on:
+      - postgres-server
+      - eureka-server
+      - kafka
+      - keycloak
+    environment:
+      - NAME=z4-studios-service
+      - PORT=8003
+      - DB_HOST=z4-db-postgres-server:5432
+      - DB_DATABASE=db_studios
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - DDL_AUTO=none
+      - EUREKA_URL=http://z4-pt-eureka:8761/eureka
+      - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
+      - GATEWAY_URL=http://z4-pt-gateway:8090
+    ports:
+      - "8003:8003"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nosql-catalogs-service:
+    container_name: 4nosql-sv-catalogs-service
+    image: z4nosql-sv-catalogs-service:v1
+    restart: always
+    depends_on:
+      - mongo-server
+      - eureka-server
+      - kafka
+      - keycloak
+    environment:
+      - NAME=z4nosql-catalogs-service
+      - PORT=7001
+      - DB_HOST=z4-db-mongo-server:27017
+      - DB_DATABASE=db_catalogs
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+      - DDL_AUTO=none
+      - EUREKA_URL=http://z4-pt-eureka:8761/eureka
+      - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
+      - KAFKA_URL=kafka:29092
+    ports:
+      - "7001:7001"
+    networks:
+      - broker-kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7001/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+    name: postgres_data
+  mongodb_data:
+    name: mongodb_data
+
+networks:
+  broker-kafka:
+    driver: bridge
