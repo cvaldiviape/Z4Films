@@ -9,7 +9,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  kafka:
+  kafka: # es un broker (para que se considere un cluster de kafka, se debe definir al menos 2 brokers)
     container_name: z4-kf-kafka
     image: confluentinc/cp-kafka:latest
     networks:
@@ -25,6 +25,11 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   kafdrop:
     container_name: z4-kf-kafdrop
@@ -164,7 +169,7 @@ services:
       - CATALOGS_SERVICE=z4-catalogs-service
       - MASTER_DATA_SERVICE=z4-master-data-service
       - STUDIOS_SERVICE=z4-studios-service
-      # - NOSQL_CATALOGS_SERVICE=
+      - NOSQL_CATALOGS_SERVICE=z4nosql-catalogs-service
     ports:
       - "8090:8090"
     networks:
@@ -191,9 +196,10 @@ services:
       - DB_DATABASE=db_catalogs
       - DB_USERNAME=admin
       - DB_PASSWORD=secret
+      - DDL_AUTO=none
       - EUREKA_URL=http://z4-pt-eureka:8761/eureka
       - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
-      - KAFKA_URL=http://z4-kf-kafka:9292
+      - KAFKA_URL=kafka:29092
       - GATEWAY_URL=http://z4-pt-gateway:8090
     ports:
       - "8001:8001"
@@ -221,9 +227,9 @@ services:
       - DB_DATABASE=db_master_data
       - DB_USERNAME=admin
       - DB_PASSWORD=secret
+      - DDL_AUTO=none
       - EUREKA_URL=http://z4-pt-eureka:8761/eureka
       - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
-      - KAFKA_URL=http://z4-kf-kafka:9292
     ports:
       - "8002:8002"
     networks:
@@ -250,9 +256,9 @@ services:
       - DB_DATABASE=db_studios
       - DB_USERNAME=admin
       - DB_PASSWORD=secret
+      - DDL_AUTO=none
       - EUREKA_URL=http://z4-pt-eureka:8761/eureka
       - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
-      - KAFKA_URL=http://z4-kf-kafka:9292
       - GATEWAY_URL=http://z4-pt-gateway:8090
     ports:
       - "8003:8003"
@@ -280,9 +286,10 @@ services:
       - DB_DATABASE=db_catalogs
       - DB_USERNAME=admin
       - DB_PASSWORD=secret
+      - DDL_AUTO=none
       - EUREKA_URL=http://z4-pt-eureka:8761/eureka
       - ISSUER_URI=http://z4-pt-keycloak:8080/realms/z4movies-dev
-      - KAFKA_URL=http://z4-kf-kafka:9292
+      - KAFKA_URL=kafka:29092
     ports:
       - "7001:7001"
     networks:
