@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kf-zookeeper
+spec:
+  ports:
+  - port: 2181 # (PUERTO EN EL QUE SE EXPONDRA EL SERVICE asociado a un POD) Especifica el puerto en el que el servicio Kubernetes estará disponible para otros componentes dentro del clúster.
+    protocol: TCP
+    targetPort: 2181 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
+  selector:
+    app: kf-zookeeper
+  type: ClusterIP
+
+
+# ports:
+#   - port: 9000
+#     protocol: TCP
+#     targetPort: 7000
+
+# 1) Port (9000): Es el puerto del servicio que otros pods utilizan para comunicarse.
+# Ejemplo: Un pod que necesita acceder a la aplicación kafdrop haría una solicitud a kf-kafdrop:9000.
+
+# 2) TargetPort (7000): Es el puerto expuesto dentro del contenedor de la aplicación.
+# Ejemplo: El tráfico entrante al servicio en el puerto 9000 se dirige al contenedor donde Kafdrop está escuchando en el puerto interno 7000.
+
+
+# a) port: es el puerto del servicio al que se conectan otros pods dentro del mismo clúster para interactuar con el contenedor a través del servicio.
+# b) targetPort: se refiere al puerto dentro del contenedor dentro del pod.

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kf-zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: kf-zookeeper # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: kf-zookeeper # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+      - image: confluentinc/cp-zookeeper:latest
+        name: kf-zookeeper
+        ports:
+        - containerPort: 2181 # Verifica si el puerto especificado en el contenedor está listo para aceptar conexiones TCP. Kubernetes realiza esta comprobación directamente en el contenedor.
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "2181"
+        - name: ZOOKEEPER_TICK_TIME
+          value: "2000"
