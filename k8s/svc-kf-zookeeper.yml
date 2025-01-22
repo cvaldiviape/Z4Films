@@ -8,7 +8,7 @@ spec:
     protocol: TCP
     targetPort: 2181 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
   selector:
-    app: kf-zookeeper
+    app: kf-zookeeper # Etiqueta igual a la del deployment
   type: ClusterIP
 
 

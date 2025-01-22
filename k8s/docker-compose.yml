@@ -58,8 +58,8 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=secret
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./postgres-init/postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql:ro
+      - postgres_data:/var/lib/postgresql/data # Proporciona un volumen persistente para los datos de la base de datos, asegurando que no se pierdan entre reinicios.
+      - ./postgres-init/postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql:ro # Automatiza la configuración inicial de la base de datos montando un archivo SQL de inicialización desde tu máquina al contenedor.
     networks:
       - broker-kafka
   

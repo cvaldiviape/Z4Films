@@ -8,5 +8,5 @@ spec:
     protocol: TCP
     targetPort: 9000 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
   selector:
-    app: kf-kafdrop
+    app: kf-kafdrop # Etiqueta igual a la del deployment
   type: LoadBalancer

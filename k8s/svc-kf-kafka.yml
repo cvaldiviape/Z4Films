@@ -8,5 +8,5 @@ spec:
     protocol: TCP
     targetPort: 29092 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
   selector:
-    app: kf-kafka
+    app: kf-kafka # Etiqueta igual a la del deployment
   type: ClusterIP

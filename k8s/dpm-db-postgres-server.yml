@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-postgres-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: db-postgres-server # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: db-postgres-server # Etiqueta asignada a los Pods creados por este template.
+    spec: # Define las especificaciones generales para los Pods gestionados por este Deployment.
+      containers:
+      - name: postgres-server
+        image: postgres:15
+        ports:
+        - containerPort: 5432 # Puerto interno del contenedor
+        env:
+        - name: POSTGRES_DB
+          value: "root"
+        - name: POSTGRES_USER
+          value: "admin"
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+        volumeMounts: # Volúmenes para datos persistentes y scripts de inicialización (usara los volumenes definidos en "volumes")
+        - name: postgres-data # Montaje del volumen hostPath para datos de PostgreSQL
+          mountPath: /var/lib/postgresql/data # Proporciona un volumen persistente para los datos de la base de datos, asegurando que no se pierdan entre reinicios.
+        # - name: init-script # Montaje del volumen hostPath para el script de inicialización
+        #   mountPath: /docker-entrypoint-initdb.d/postgres-init.sql # Automatiza la configuración inicial de la base de datos montando un archivo SQL de inicialización desde tu máquina al contenedor.
+        #   subPath: postgres-init.sql # Asegura que solo monte el archivo en esa ruta
+      volumes: # Declaración de volúmenes
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: pvc-db-postgres-server # hace referencia al nombre del del persistence volume client "pv-db-postgres-server"
+      # - name: init-script
+      #   configMap:
+      #     name: postgres-init-config
