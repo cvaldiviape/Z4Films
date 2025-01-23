@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - image: confluentinc/cp-zookeeper:latest
-        name: kf-zookeeper
+        name: zookeeper
         ports:
         - containerPort: 2181 # Verifica si el puerto especificado en el contenedor está listo para aceptar conexiones TCP. Kubernetes realiza esta comprobación directamente en el contenedor.
         env:
