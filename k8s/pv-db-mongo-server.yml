@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-db-postgres-server # # Nombre del PV, usado por el PVC para enlazarlo.
+  name: pv-db-mongo-server # # Nombre del PV, usado por el PVC para enlazarlo.
 spec:
   capacity:
     storage: 2Gi # Capacidad total del volumen (debe cumplir o exceder el solicitado por el PVC).
@@ -10,7 +10,7 @@ spec:
   accessModes: # Especifica cómo se puede acceder al volumen.
     - ReadWriteOnce # Permite que solo un nodo lo monte con acceso de lectura y escritura.
   hostPath:
-    path: /data/postgresql # Ruta del sistema de archivos local del nodo donde se almacenarán los datos.
+    path: /data/mongo # Ruta del sistema de archivos local del nodo donde se almacenarán los datos.
     type: DirectoryOrCreate # Si el directorio no existe, Kubernetes lo creará automáticamente.
 
 

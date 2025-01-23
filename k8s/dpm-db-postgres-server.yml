@@ -36,4 +36,4 @@ spec:
           claimName: pvc-db-postgres-server # hace referencia al nombre del del persistence volume client "pv-db-postgres-server"
       # - name: init-script
       #   configMap:
-      #     name: postgres-init-config
+      #     name: postgres-init-config # Nombre del ConfigMap que contiene el script de inicialización
