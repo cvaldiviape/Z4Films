@@ -41,3 +41,9 @@ spec:
       - name: keycloak-data
         persistentVolumeClaim:
           claimName: pvc-db-keycloak # hace referencia al nombre del del persistence volume client "pv-db-postgres-server"
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+# QUE ES UN DEPLOYMENT?
+# - es un objeto de alto nivel que gestiona la implementación y el ciclo de vida de un conjunto de Pods en el clúster. 
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.

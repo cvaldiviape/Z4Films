@@ -17,3 +17,16 @@ spec:
                 name: pt-keycloak # Coincide con el nombre del Service
                 port:
                   number: 8080 # Coincide con el puerto "port" del Service
+
+
+# QUE ES UN INGRESS? 
+# - es un objeto de Kubernetes que proporciona una capa de enrutamiento HTTP/HTTPS para servicios dentro del clúster. Ofrece reglas más avanzadas para manejar solicitudes entrantes.
+# - Enruta tráfico externo (HTTP/HTTPS) a Services específicos basándose en reglas como rutas o nombres de host.
+# - Requiere un controlador Ingress: Ejemplo, NGINX Ingress Controller o Traefik.
+# - Soporte para balanceo de carga HTTP/HTTPS.
+# - Soporta TLS: Configuración fácil de certificados para HTTPS.
+
+
+# Cuándo usar un Ingress:
+# - Cuando necesitas enrutamiento avanzado, como nombres de dominio (myapp.example.com) o rutas (/api, /web).
+# - Para agregar HTTPS y balanceo de carga basado en solicitudes HTTP.

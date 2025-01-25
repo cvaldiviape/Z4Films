@@ -11,6 +11,8 @@ spec:
     requests:
       storage: 2Mi # Solicitud mínima de almacenamiento que el PVC necesita.
 
+# https://kubernetes.io/docs/concepts/storage/
+# https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 
 # PersistentVolumeClaim (PVC): 
 # - Es una solicitud de almacenamiento persistente realizada por un usuario o un Pod. 
