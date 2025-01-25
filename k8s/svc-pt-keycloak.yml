@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pt-keycloak
+spec:
+  ports:
+    - nodePort: 31619 # Esto asigna un puerto a nivel de nodo (fuera del clúster) en el cual se puede acceder a este servicio, en este caso el puerto es 31619. Es importante destacar que este puerto es el que estará disponible para los usuarios que accedan directamente al clúster desde el exterior.
+      name: http
+      port: 8080 # (PUERTO EN EL QUE SE EXPONDRA EL SERVICE asociado a un POD) Especifica el puerto en el que el servicio Kubernetes estará disponible para otros componentes dentro del clúster.
+      targetPort: 8080 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
+  selector:
+    app: pt-keycloak # Etiqueta igual a la del deployment
+  type: NodePort # NodePort es un tipo de servicio en Kubernetes que hace accesible el servicio fuera del clúster en un puerto de nodo específico (en este caso, el 31619)
+
+
+# ports:
+#   - port: 9000
+#     protocol: TCP
+#     targetPort: 7000
+
+# 1) Port (9000): Es el puerto del servicio que otros pods utilizan para comunicarse.
+# Ejemplo: Un pod que necesita acceder a la aplicación kafdrop haría una solicitud a kf-kafdrop:9000.
+
+# 2) TargetPort (7000): Es el puerto expuesto dentro del contenedor de la aplicación.
+# Ejemplo: El tráfico entrante al servicio en el puerto 9000 se dirige al contenedor donde Kafdrop está escuchando en el puerto interno 7000.
+
+
+# a) port: es el puerto del servicio al que se conectan otros pods dentro del mismo clúster para interactuar con el contenedor a través del servicio.
+# b) targetPort: se refiere al puerto dentro del contenedor dentro del pod.
+
+
+# ------------------------------------------------------------------------- FORMAS DE EXPONER UN SERVICIO ------------------------------------------------------------------------- #
+
+# ClusterIP: 
+# - Acceder a los servicios internamente desde otros pods dentro del mismo clúster.
+# - Kubernetes asigna un puerto interno al servicio, y los pods dentro del clúster pueden acceder a este servicio utilizando el nombre del servicio o la IP del clúster.
+
+# NodePort: 
+# - Exponer el servicio a nivel de red para acceso desde fuera del clúster. Es útil cuando se quiere que el servicio sea accesible desde fuera del clúster pero sin necesidad de un balanceador de carga.
+# - Kubernetes asigna un puerto entre 30000-32767 en cada nodo, y la aplicación puede ser accedida a través del puerto nodePort en cualquier nodo. 
+
+# LoadBalancer: 
+# - Cuando se quiere exponer el servicio a Internet con un balanceo de carga automático y equilibrado entre múltiples instancias de pods. Ideal para aplicaciones externas a un clúster de Kubernetes.
+# - Kubernetes proporciona una IP externa accesible a través de un balanceador de carga en la nube (o un balanceador de carga local si se implementa en un entorno físico).

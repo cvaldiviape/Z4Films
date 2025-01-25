@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kf-kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: kf-kafka # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: kf-kafka # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+      - image: confluentinc/cp-kafka:latest
+        name: kafka
+        ports:
+        - containerPort: 9092 # Puerto interno del contenedor
+        env:
+        - name: KAFKA_BROKER_ID
+          value: "1"
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "kf-zookeeper:2181"
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://kf-kafka:29092,PLAINTEXT_HOST://localhost:9092" # interno, externo
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
+        - name: KAFKA_INTER_BROKER_LISTENER_NAME
+          value: "PLAINTEXT"
+        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+          value: "1"
+        readinessProbe: # Sonda de lectura equivalente a healthcheck
+          tcpSocket: # Verifica si un puerto dentro del contenedor está accesible mediante una conexión TCP.
+            port: 9092
+          periodSeconds: 30 # Periodicidad con que se verifica el estado.
+          timeoutSeconds: 10 # Tiempo límite para cada intento de conexión.
+          failureThreshold: 5 # Número de intentos fallidos antes de que la sonda sea marcada como fallida.
+          initialDelaySeconds: 60  # Espera 60 segundos antes de realizar la primera comprobación

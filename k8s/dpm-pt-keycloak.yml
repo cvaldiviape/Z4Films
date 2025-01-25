@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pt-keycloak
+  labels:
+    app: pt-keycloak # Etiquetas adicionales para categorizar y buscar recursos
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: pt-keycloak # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: pt-keycloak # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+        - name: keycloak
+          image: cvaldiviape/z4movies-keycloak:latest
+          args: ["start-dev"]
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: "admin"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: "admin"
+            - name: KC_PROXY # Configura Keycloak como proxy. El valor "edge" es común para habilitar tráfico seguro.
+              value: "edge" 
+            - name: KC_HEALTH_ENABLED # Habilita el endpoint de salud /health.
+              value: "true"
+          ports:
+            - name: http
+              containerPort: 8080 # Expone el puerto 8080 dentro del contenedor para el tráfico HTT
+          readinessProbe: # Configura una prueba de disponibilidad para asegurar que el contenedor está listo para recibir tráfico.
+            httpGet:
+              path: /health/ready # Endpoint de salud que consulta Kubernetes (/health/ready).
+              port: 8080 # Puerto usado por la sonda, configurado en este caso como 9000. NOTA: puede variar dependiendo de la imagen de Keycloak que estés utilizando,
+          volumeMounts: # Volúmenes para datos persistentes y scripts de inicialización (usara los volumenes definidos en "volumes")
+          - name: keycloak-data # Montaje del volumen hostPath para datos de PostgreSQL
+            mountPath: /opt/z4greed/keycloak/standalone/data # Proporciona un volumen persistente para los datos de la base de datos, asegurando que no se pierdan entre reinicios.
+      volumes: # Declaración de volúmenes
+      - name: keycloak-data
+        persistentVolumeClaim:
+          claimName: pvc-db-keycloak # hace referencia al nombre del del persistence volume client "pv-db-postgres-server"

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-db-keycloak # # Nombre del PV, usado por el PVC para enlazarlo.
+spec:
+  capacity:
+    storage: 2Mi # Capacidad total del volumen (debe cumplir o exceder el solicitado por el PVC).
+  volumeMode: Filesystem
+  storageClassName: standard # Clase de almacenamiento asociada.
+  accessModes: # Especifica cómo se puede acceder al volumen.
+    - ReadWriteOnce # Permite que solo un nodo lo monte con acceso de lectura y escritura.
+  hostPath:
+    path: /data/keycloak # Ruta del sistema de archivos local del nodo donde se almacenarán los datos.
+    type: DirectoryOrCreate # Si el directorio no existe, Kubernetes lo creará automáticamente.
+
+
+
+# PersistentVolume (PV): 
+# - Es un recurso en Kubernetes que representa una unidad de almacenamiento físico dentro del clúster. 
+# - Este almacenamiento puede ser proporcionado de diversas maneras, como un disco local, un volumen de red (por ejemplo, NFS), o soluciones en la nube (como Amazon EBS, Google Persistent Disks).
+# - Describe un recurso físico y su disponibilidad en el clúster. 
+# - Los administradores de Kubernetes crean estos volúmenes para ponerlos a disposición de los Pods que necesitan almacenamiento persistente.
+# - Está vinculado a un almacenamiento físico o en la nube.
+
+# PersistentVolume (PV): 
+# - Es el recurso que representa el almacenamiento físico disponible en Kubernetes.
+
+# PersistentVolume PV: 
+# - Define el recurso físico disponible en el nodo (/data/postgresql).
+
+
+
+# hostPath - Cuándo usar hostPath (definido dentro del Deployment):
+# - En entornos locales o de desarrollo, donde no necesitas persistencia más allá del reinicio de un nodo o el cambio del Pod.
+# - En escenarios de prueba donde el almacenamiento compartido y centralizado no es necesario.
+
+
+# IMPORTANTE
+# El "path" en el PV es donde físicamente se almacenan los datos en el nodo o en el almacenamiento que utilizas.
+# El "mountPath" en el Deployment es donde esos datos se montan dentro del contenedor.

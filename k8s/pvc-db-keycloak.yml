@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-db-keycloak # Nombre del PVC, usado para referenciarlo desde un Deployment o Pod.
+spec:
+  volumeName: pv-db-keycloak # es el nombre del "PV", es decir Asocia el PVC a un PV específico (indicado por el nombre).
+  storageClassName: standard # Clase de almacenamiento que usa. Aquí, `standard` es el predeterminado en Minikube.
+  accessModes:
+    - ReadWriteOnce # El PVC debe ser accesible de forma lectura y escritura desde un solo nodo
+  resources:
+    requests:
+      storage: 2Mi # Solicitud mínima de almacenamiento que el PVC necesita.
+
+
+# PersistentVolumeClaim (PVC): 
+# - Es una solicitud de almacenamiento persistente realizada por un usuario o un Pod. 
+# - El PVC pide un volumen específico en base a sus necesidades (capacidad de almacenamiento, acceso, etc.).
+# - El PVC actúa como una "petición" que los Pods realizan para obtener almacenamiento persistente. 
+# - Un PVC puede ser reclamado por un Pod cuando este necesita almacenamiento, y Kubernetes automáticamente lo enlaza a un PV que cumpla con las características solicitadas.
+# - El PVC especifica los requisitos de almacenamiento del contenedor (como tamaño, acceso y clase de almacenamiento).
+# - Es el punto de entrada del Pod al almacenamiento persistente. 
+# - Los Pods no interactúan directamente con los PVs; siempre lo hacen a través de un PVC.
+
+# PersistentVolumeClaim (PVC): 
+# - Es la solicitud del usuario o del Deployment para obtener un volumen que cumpla con los requisitos específicos (tamaño, clase, etc.).
+
+# PersistentVolumeClaim (PVC): 
+# - Solicita almacenamiento persistente que cumpla las características del PV (2Gi, ReadWriteOnce, standard).

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kf-kafdrop
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: kf-kafdrop # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: kf-kafdrop # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+      - image: obsidiandynamics/kafdrop:latest
+        name: kafdrop
+        ports:
+        - containerPort: 9000 # Puerto interno del contenedor
+        env:
+        - name: KAFKA_BROKERCONNECT
+          value: "kf-kafka:29092"
+        - name: TZ
+          value: "America/Lima"
+        readinessProbe: # Sonda de lectura equivalente a healthcheck
+          tcpSocket: # Verifica si un puerto dentro del contenedor está accesible mediante una conexión TCP.
+            port: 9000
+          initialDelaySeconds: 20 # Aumenta el tiempo de espera inicial para que la sonda comience a ejecutarse después de que el contenedor haya tenido tiempo para inicializarse,
+          periodSeconds: 30 # Periodicidad con que se verifica el estado.
+          timeoutSeconds: 10 # Tiempo límite para cada intento de conexión.
+          failureThreshold: 5 # Número de intentos fallidos antes de que la sonda sea marcada como fallida.
