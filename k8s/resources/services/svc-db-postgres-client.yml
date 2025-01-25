@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: db-postgres-client
 spec:
-  type: NodePort
   ports:
-    - port: 80 # (PUERTO EN EL QUE SE EXPONDRA EL SERVICE asociado a un POD) Especifica el puerto en el que el servicio Kubernetes estará disponible para otros componentes dentro del clúster.
-      protocol: TCP
-      targetPort: 80 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
+  - port: 80 # (PUERTO EN EL QUE SE EXPONDRA EL SERVICE asociado a un POD) Especifica el puerto en el que el servicio Kubernetes estará disponible para otros componentes dentro del clúster.
+    protocol: TCP
+    targetPort: 80 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
   selector:
     app: db-postgres-client # Etiqueta igual a la del deployment
   type: LoadBalancer

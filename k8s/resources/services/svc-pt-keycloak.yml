@@ -4,10 +4,10 @@ metadata:
   name: pt-keycloak
 spec:
   ports:
-    - nodePort: 31619 # Esto asigna un puerto a nivel de nodo (fuera del clúster) en el cual se puede acceder a este servicio, en este caso el puerto es 31619. Es importante destacar que este puerto es el que estará disponible para los usuarios que accedan directamente al clúster desde el exterior.
-      name: http
-      port: 8080 # (PUERTO EN EL QUE SE EXPONDRA EL SERVICE asociado a un POD) Especifica el puerto en el que el servicio Kubernetes estará disponible para otros componentes dentro del clúster.
-      targetPort: 8080 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
+  - nodePort: 31619 # Esto asigna un puerto a nivel de nodo (fuera del clúster) en el cual se puede acceder a este servicio, en este caso el puerto es 31619. Es importante destacar que este puerto es el que estará disponible para los usuarios que accedan directamente al clúster desde el exterior.
+    name: http
+    port: 8080 # (PUERTO EN EL QUE SE EXPONDRA EL SERVICE asociado a un POD) Especifica el puerto en el que el servicio Kubernetes estará disponible para otros componentes dentro del clúster.
+    targetPort: 8080 # (PUERTO REAL DE LA APLICACION DENTRO DEL POD) Especifica el puerto en el pod (dentro del contenedor) al que el servicio debe enviar el tráfico.
   selector:
     app: pt-keycloak # Etiqueta igual a la del deployment
   type: NodePort # NodePort es un tipo de servicio en Kubernetes que hace accesible el servicio fuera del clúster en un puerto de nodo específico (en este caso, el 31619)
