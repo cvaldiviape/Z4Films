@@ -26,3 +26,18 @@ spec:
 
 # a) port: es el puerto del servicio al que se conectan otros pods dentro del mismo clúster para interactuar con el contenedor a través del servicio.
 # b) targetPort: se refiere al puerto dentro del contenedor dentro del pod.
+
+
+# ------------------------------------------------------------------------- FORMAS DE EXPONER UN SERVICIO ------------------------------------------------------------------------- #
+
+# ClusterIP: 
+# - Acceder a los servicios internamente desde otros pods dentro del mismo clúster.
+# - Kubernetes asigna un puerto interno al servicio, y los pods dentro del clúster pueden acceder a este servicio utilizando el nombre del servicio o la IP del clúster.
+
+# NodePort: 
+# - Exponer el servicio a nivel de red para acceso desde fuera del clúster. Es útil cuando se quiere que el servicio sea accesible desde fuera del clúster pero sin necesidad de un balanceador de carga.
+# - Kubernetes asigna un puerto entre 30000-32767 en cada nodo, y la aplicación puede ser accedida a través del puerto nodePort en cualquier nodo. 
+
+# LoadBalancer: 
+# - Cuando se quiere exponer el servicio a Internet con un balanceo de carga automático y equilibrado entre múltiples instancias de pods. Ideal para aplicaciones externas a un clúster de Kubernetes.
+# - Kubernetes proporciona una IP externa accesible a través de un balanceador de carga en la nube (o un balanceador de carga local si se implementa en un entorno físico).
