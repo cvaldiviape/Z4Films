@@ -116,10 +116,10 @@ services:
     container_name: z4-pt-keycloak
     image: cvaldiviape/z4movies-keycloak:latest
     environment:
-    - KC_HOSTNAME=z4-pt-keycloak:8080
-    - KC_HOSTNAME_STRICT=true
-    - KC_HOSTNAME_STRICT_HTTPS=false
-    - KC_PROXY=edge
+    - KC_HOSTNAME=z4-pt-keycloak:8080 # Indica que Keycloak estará accesible externamente como z4-pt-keycloak en el puerto 8080.
+    - KC_HOSTNAME_STRICT=true # las solicitudes que no usen el hostname definido serán bloqueadas
+    - KC_HOSTNAME_STRICT_HTTPS=false # Permite que las solicitudes sean aceptadas incluso si no usan HTTPS. Esto es útil para entornos de desarrollo donde HTTPS puede no estar configurado.
+    - KC_PROXY=edge # Se utiliza cuando Keycloak está detrás de un proxy inverso. Indica que debe confiar en los encabezados configurados por el proxy (por ejemplo, X-Forwarded-For, X-Forwarded-Host).
     ports:
       - "8080:8080"
     networks:
