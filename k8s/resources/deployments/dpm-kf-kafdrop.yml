@@ -13,8 +13,8 @@ spec:
         app: kf-kafdrop # Etiqueta asignada a los Pods creados por este template.
     spec:
       containers:
-      - image: obsidiandynamics/kafdrop:latest
-        name: kafdrop
+      - name: kafdrop
+        image: obsidiandynamics/kafdrop:latest
         ports:
         - containerPort: 9000 # Puerto interno del contenedor
         env:

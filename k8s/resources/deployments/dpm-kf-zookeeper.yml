@@ -13,8 +13,8 @@ spec:
         app: kf-zookeeper # Etiqueta asignada a los Pods creados por este template.
     spec:
       containers:
-      - image: confluentinc/cp-zookeeper:latest
-        name: zookeeper
+      - name: zookeeper
+        image: confluentinc/cp-zookeeper:latest
         ports:
         - containerPort: 2181 # Verifica si el puerto especificado en el contenedor está listo para aceptar conexiones TCP. Kubernetes realiza esta comprobación directamente en el contenedor.
         env:

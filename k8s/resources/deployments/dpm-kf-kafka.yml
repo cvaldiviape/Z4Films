@@ -13,8 +13,8 @@ spec:
         app: kf-kafka # Etiqueta asignada a los Pods creados por este template.
     spec:
       containers:
-      - image: confluentinc/cp-kafka:latest
-        name: kafka
+      - name: kafka 
+        image: confluentinc/cp-kafka:latest
         ports:
         - containerPort: 9092 # Puerto interno del contenedor
         env:
