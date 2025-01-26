@@ -28,3 +28,9 @@ spec:
           value: bloodyroar
         - name: ME_CONFIG_MONGODB_SERVER
           value: db-mongo-server # Estás indicando al contenedor mongo-express que se conecte al servidor MongoDB a través del servicio "svc-db-mongo-server.yml"
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+# QUE ES UN DEPLOYMENT?
+# - es un objeto de alto nivel que gestiona la implementación y el ciclo de vida de un conjunto de Pods en el clúster. 
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.

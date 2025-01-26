@@ -15,29 +15,35 @@ spec:
         app: pt-keycloak # Etiqueta asignada a los Pods creados por este template.
     spec:
       containers:
-        - name: keycloak
-          image: cvaldiviape/z4movies-keycloak:latest
-          args: ["start-dev"]
-          env:
-            - name: KEYCLOAK_ADMIN
-              value: "admin"
-            - name: KEYCLOAK_ADMIN_PASSWORD
-              value: "admin"
-            - name: KC_PROXY # Configura Keycloak como proxy. El valor "edge" es común para habilitar tráfico seguro.
-              value: "edge" 
-            - name: KC_HEALTH_ENABLED # Habilita el endpoint de salud /health.
-              value: "true"
-          ports:
-            - name: http
-              containerPort: 8080 # Expone el puerto 8080 dentro del contenedor para el tráfico HTT
-          readinessProbe: # Configura una prueba de disponibilidad para asegurar que el contenedor está listo para recibir tráfico.
-            httpGet:
-              path: /health/ready # Endpoint de salud que consulta Kubernetes (/health/ready).
-              port: 8080 # Puerto usado por la sonda, configurado en este caso como 9000. NOTA: puede variar dependiendo de la imagen de Keycloak que estés utilizando,
-          volumeMounts: # Volúmenes para datos persistentes y scripts de inicialización (usara los volumenes definidos en "volumes")
-          - name: keycloak-data # Montaje del volumen hostPath para datos de PostgreSQL
-            mountPath: /opt/z4greed/keycloak/standalone/data # Proporciona un volumen persistente para los datos de la base de datos, asegurando que no se pierdan entre reinicios.
+      - name: keycloak
+        image: cvaldiviape/z4movies-keycloak:latest
+        args: ["start-dev"]
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "admin"
+        - name: KC_PROXY # Configura Keycloak como proxy. El valor "edge" es común para habilitar tráfico seguro.
+          value: "edge" 
+        - name: KC_HEALTH_ENABLED # Habilita el endpoint de salud /health.
+          value: "true"
+        ports:
+        - name: http
+          containerPort: 8080 # Expone el puerto 8080 dentro del contenedor para el tráfico HTT
+        readinessProbe: # Configura una prueba de disponibilidad para asegurar que el contenedor está listo para recibir tráfico.
+          httpGet:
+            path: /health/ready # Endpoint de salud que consulta Kubernetes (/health/ready).
+            port: 8080 # Puerto usado por la sonda, configurado en este caso como 9000. NOTA: puede variar dependiendo de la imagen de Keycloak que estés utilizando,
+        volumeMounts: # Volúmenes para datos persistentes y scripts de inicialización (usara los volumenes definidos en "volumes")
+        - name: keycloak-data # Montaje del volumen hostPath para datos de PostgreSQL
+          mountPath: /opt/z4greed/keycloak/standalone/data # Proporciona un volumen persistente para los datos de la base de datos, asegurando que no se pierdan entre reinicios.
       volumes: # Declaración de volúmenes
       - name: keycloak-data
         persistentVolumeClaim:
           claimName: pvc-db-keycloak # hace referencia al nombre del del persistence volume client "pv-db-postgres-server"
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+# QUE ES UN DEPLOYMENT?
+# - es un objeto de alto nivel que gestiona la implementación y el ciclo de vida de un conjunto de Pods en el clúster. 
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.

@@ -10,7 +10,18 @@ spec:
   selector:
     app: kf-kafdrop # Etiqueta igual a la del deployment
   type: LoadBalancer
-  
+
+# https://kubernetes.io/docs/concepts/services-networking/service/
+
+# QUE ES UN SERVICE?
+# - es un objeto de Kubernetes que expone un conjunto de Pods como un servicio de red dentro del clúster. 
+# - actúa como un proxy interno o externo para exponer tus Pods.
+
+# QUE ES UN PROXY?
+# - Un proxy es un intermediario que actúa entre un cliente (quien realiza la solicitud) y un servidor (quien procesa esa solicitud). 
+# - Su principal función es recibir las solicitudes del cliente, enviarlas al servidor y luego devolver la respuesta del servidor al cliente. 
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------- #
 
 # ports:
 #   - port: 9000

@@ -13,7 +13,8 @@ spec:
     path: /data/postgresql # Ruta del sistema de archivos local del nodo donde se almacenarán los datos.
     type: DirectoryOrCreate # Si el directorio no existe, Kubernetes lo creará automáticamente.
 
-
+# https://kubernetes.io/docs/concepts/storage/
+# https://kubernetes.io/docs/concepts/storage/persistent-volumes/
 
 # PersistentVolume (PV): 
 # - Es un recurso en Kubernetes que representa una unidad de almacenamiento físico dentro del clúster. 
