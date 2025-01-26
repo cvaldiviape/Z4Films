@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pt-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: pt-gateway # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: pt-gateway # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+      - name: gateway
+        image: cvaldiviape/z4-pt-gateway:v1
+        ports:
+        - containerPort: 8090 # Puerto interno del contenedor / Verifica si el puerto especificado en el contenedor está listo para aceptar conexiones TCP. Kubernetes realiza esta comprobación directamente en el contenedor.
+        env:
+        - name: NAME
+          value: "gateway"
+        - name: PORT
+          value: "8090"
+        - name: EUREKA_URL
+          value: "http://pt-eureka:8761/eureka" # "pt-eureka" nombre del service EUREKA y "8761" puertodel deployment "containerPort"
+        - name: ISSUER_URI
+          value: "http://pt-keycloak:8080/realms/z4movies-dev" # "pt-keycloak" nombre del service EUREKA y "8080" puertodel deployment "containerPort"
+        - name: JWT_SET_URI
+          value: "http://pt-keycloak:8080/realms/z4movies-dev/protocol/openid-connect/certs" # "pt-keycloak" nombre del service EUREKA y "8080" puertodel deployment "containerPort"
+        - name: CATALOGS_SERVICE
+          value: "z4-catalogs-service"
+        - name: MASTER_DATA_SERVICE
+          value: "z4-master-data-service"
+        - name: STUDIOS_SERVICE
+          value: "z4-studios-service"
+        - name: NOSQL_CATALOGS_SERVICE
+          value: "z4nosql-catalogs-service"
+        livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+# QUE ES UN DEPLOYMENT?
+# - es un objeto de alto nivel que gestiona la implementación y el ciclo de vida de un conjunto de Pods en el clúster. 
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.
