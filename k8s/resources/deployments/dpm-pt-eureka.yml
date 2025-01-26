@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pt-eureka
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: pt-eureka # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: pt-eureka # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+      - name: eureka
+        image: cvaldiviape/z4-pt-eureka:v1
+        ports:
+        - containerPort: 8761 # Puerto interno del contenedor / Verifica si el puerto especificado en el contenedor está listo para aceptar conexiones TCP. Kubernetes realiza esta comprobación directamente en el contenedor.
+        livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8761
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+# QUE ES UN DEPLOYMENT?
+# - es un objeto de alto nivel que gestiona la implementación y el ciclo de vida de un conjunto de Pods en el clúster. 
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.
