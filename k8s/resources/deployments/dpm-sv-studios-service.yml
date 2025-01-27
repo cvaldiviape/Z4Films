@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sv-studios-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # define las etiquetas que el Deployment usará para identificar los Pods que administra.
+      app: sv-studios-service # El Deployment buscará Pods con esta etiqueta.
+  template: # plantilla del POD - aqui se configura el POD
+    metadata:
+      labels: # define las etiquetas que tendrán los Pods creados por el Deployment.
+        app: sv-studios-service # Etiqueta asignada a los Pods creados por este template.
+    spec:
+      containers:
+      - name: studios-service
+        image: cvaldiviape/z4-sv-studios-service:v1
+        ports:
+        - containerPort: 8003 # Puerto interno del contenedor / Verifica si el puerto especificado en el contenedor está listo para aceptar conexiones TCP. Kubernetes realiza esta comprobación directamente en el contenedor.
+        env:
+        - name: NAME
+          value: z4-studios-service
+        - name: PORT
+          value: "8003"
+        - name: DB_HOST
+          value: db-postgres-server:5432
+        - name: DB_DATABASE
+          value: db_studios
+        - name: DB_USERNAME
+          value: admin
+        - name: DB_PASSWORD
+          value: secret
+        - name: DDL_AUTO
+          value: create
+        - name: EUREKA_URL
+          value: http://pt-eureka:8761/eureka
+        - name: ISSUER_URI
+          value: http://pt-keycloak:8080/realms/z4movies-dev
+        - name: GATEWAY_URL
+          value: http://pt-gateway:8090
+        livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8003
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+# QUE ES UN DEPLOYMENT?
+# - es un objeto de alto nivel que gestiona la implementación y el ciclo de vida de un conjunto de Pods en el clúster. 
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.
+# - su objetivo principal es garantizar que las aplicaciones se ejecuten continuamente y que siempre haya el número correcto de réplicas funcionando de forma estable.
