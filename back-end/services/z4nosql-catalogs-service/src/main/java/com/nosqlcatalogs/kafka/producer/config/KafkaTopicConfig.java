@@ -22,7 +22,7 @@ public class KafkaTopicConfig {
 
         return TopicBuilder.name(TopicConstans.ERROR)
                 .partitions(2)
-                .replicas(2)
+                .replicas(1)
                 .configs(configs)
                 .build();
     }

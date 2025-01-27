@@ -27,7 +27,7 @@ public class KafkaTopicConfig {
 
         return TopicBuilder.name(TopicConstans.MOVIE)
                 .partitions(2)
-                .replicas(2)
+                .replicas(1)
                 .configs(configs)
                 .build();
     }
@@ -42,7 +42,7 @@ public class KafkaTopicConfig {
 
         return TopicBuilder.name(TopicConstans.SERIE)
                 .partitions(2)
-                .replicas(2)
+                .replicas(1)
                 .configs(configs)
                 .build();
 
